@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile — FindMeOnPhoto</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+        <div class="container header-inner">
+        <a class="logo" href="index.html">
+            <img src="assets/img/logo.png" alt="Logo">
+        </a>
+        <nav class="main-nav">
+            <ul>
+            <li><a  href="galerie.html">Galerie</a></li>
+            <li><a  href="#">Millimètre</a></li>
+            <li><a  href="#">Expositions</a></li>
+            <li><a  href="#">Conférences</a></li>
+            <li><a  href="#">L’association</a></li>
+            <li><a class="selection" href="profile.html" >Profile</a></li>
+        </ul>
+        </nav>
+        </div>
+    </header>
+
+  <main class="container profile-page">
+    <section class="profile">
+      <div class="profile-header" style="display:flex;gap:1rem;align-items:center">
+        <img id="profileAvatar" src="assets/img/logo.png" alt="Avatar" style="width:80px;height:80px;border-radius:50%;object-fit:cover">
+        <div>
+          <h2 id="profileName">Nom d'Utilisateur</h2>
+          <div id="profileEmail">user@example.com</div>
+        </div>
+        <div style="margin-left:auto">
+          <button id="editProfileBtn" class="btn">Éditer le Profil</button>
+        </div>
+      </div>
+
+      <h3 style="margin-top:1.2rem">Photos de référence</h3>
+
+      <div id="photoGallery" class="photo-gallery"></div>
+
+      <div style="margin-top:1rem;">
+        <button id="addPhotoBtn" class="btn">Ajouter une photo</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/profile.js"></script>
+</body>
+</html>

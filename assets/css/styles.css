@@ -1,0 +1,358 @@
+/* General resets */
+:root{ 
+  --bg:#1b1616; --accent:#be2e2e; --text:#ffffff; --bordure:#790404;
+  --textbar:#ffffff; --card : #ffffff; 
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #222;
+  background-color:#ffffff;
+}
+
+.selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Layout helpers */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+/* Header */
+.site-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--bg);
+  border-bottom: 3px solid var(--bordure);
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 60px; 
+  background: var(--bg);
+}
+
+.logo img {
+  height: 60px;
+  width: auto;
+  border: 2px solid var(--bordure); 
+  border-radius: 8px;                 /* optionnel : arrondir les coins */
+  padding: 1px;                       /* optionnel : espace entre l'image et la bordure */
+}
+
+/* header brand (logo + titre) */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.logo-img {
+    width: 48px;         /* taille du logo */
+    height: 48px;
+    object-fit: contain;
+    display: block;
+}
+
+/* titre à côté du logo */
+.logo {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+/* avatar du profil (dans header profil) */
+#profileAvatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Navigation */
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--textbar);
+  font-weight: 500;
+  margin-right: 40px; 
+  letter-spacing: 0.05em;
+}
+
+.main-nav a:hover {
+  opacity: 0.7;
+  color: var(--accent);
+}
+
+.site-header .header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+}
+
+/* brand */
+.brand { display:flex; align-items:center; gap:0.6rem; }
+.logo-img { width:40px; height:40px; object-fit:contain; display:block; }
+.logo { margin:0; font-size:1.15rem; }
+
+/* main nav */
+.main-nav { display:flex; gap:0.75rem; align-items:center; }
+.main-nav a {
+  color: var(--text, #222);
+  text-decoration: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+}
+.main-nav a:hover { background: rgba(0,0,0,0.04); }
+
+/* mobile: stack brand + nav */
+@media (max-width:700px) {
+  .site-header .header-inner { flex-direction:column; align-items:stretch; }
+  .main-nav { justify-content: center; flex-wrap:wrap; }
+  .main-nav a { padding: 0.5rem; }
+}
+/* Grille de photos */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes fixes */
+  gap: 1rem; /* espace entre les cartes */
+  margin-top: 1rem;
+}
+
+/* Chaque carte photo */  
+.photo-item {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.photo-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* L'image à l'intérieur */
+.photo-item img {
+  width: 100%;        /* largeur de la carte */
+  height: 200px;      /* hauteur fixe */
+  object-fit: cover;  /* recadre l’image pour remplir le conteneur */
+  display: block;
+}
+
+/* Bouton téléchargement */
+.photo-item .download-btn {
+  margin: 0.5rem 0;
+  text-decoration: none;
+  background: var(--bordure);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.photo-item .download-btn:hover {
+  background: var(--accent);
+}
+
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+
+/* Hero section */
+.hero {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../img/bg.png"); /* Replace with background-image later */
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* optional overlay */
+}
+
+.hero-title {
+  font-size: 10vw;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+
+/* Main content */
+main {
+  padding-top: 4rem; /* spacing for fixed header */
+}
+
+section {
+  padding: 4rem 0;
+}
+
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.center-text {
+  text-align: center;
+  margin: 0 auto;        /* centre le bloc horizontalement */
+  max-width: 720px;      /* limite la largeur pour une meilleure lecture */
+  line-height: 1.5;
+  color: inherit;
+}
+
+/* Footer */
+.site-footer {
+  padding: 2rem 0;
+  text-align: center;
+  color: #666;
+  border-top: 1px solid #eee;
+}
+
+/* cartes de section : enlever le style de lien et donner un rendu "card" */
+.sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.section-card {
+  display: flex;
+  flex-direction: column;         /* garder les éléments empilés (titre + texte) */
+  justify-content: center;        /* centre verticalement */
+  align-items: center;            /* centre horizontalement */
+  text-align: center;             /* works for <a> and <div> */
+  text-decoration: none;
+  color: inherit;
+  background: var(--card);
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--bordure);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transition: transform .15s ease, box-shadow .15s ease;
+  min-height: 110px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.section-card h3 { margin: 0 0 0.4rem 0; font-size: 2rem; text-align: center; align-items: center;}
+.section-card p  { margin: 0; color: var(--bg); font-size: 0.95rem; }
+
+/* hover / focus */
+.section-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+}
+.section-card:focus,
+.section-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(43,124,255,0.12);
+}
+
+/* ensure no underline even for <a> */
+.section-card,
+.section-card:link,
+.section-card:visited,
+.section-card * {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* responsive */
+@media (max-width: 600px) {
+  .sections-grid { grid-template-columns: 1fr; }
+}
+
+/* Lightbox overlay */
+.lightbox {
+  position: fixed;
+  display: none; /* caché par défaut */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Image affichée en grand */
+.lightbox-img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Bouton fermer */
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Bouton Télécharger */
+.lightbox-download-btn {
+  position: absolute;
+  bottom: 30px;
+  background: var(--bordure);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.lightbox-download-btn:hover {
+  background: var(--accent);
+}
+
+
