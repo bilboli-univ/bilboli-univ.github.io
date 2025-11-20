@@ -3,26 +3,33 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Page Wei — FindMeOnPhoto</title>
+  <title>Gallerie</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
   <header class="site-header">
         <div class="container header-inner">
-        <a class="logo" href="index.html">
-            <img src="assets/img/logo.png" alt="Logo">
-        </a>
-        <nav class="main-nav">
-            <ul>
-            <li><a class="selection" href="galerie.html">Galerie</a></li>
-            <li><a  href="#">Millimètre</a></li>
-            <li><a  href="#">Expositions</a></li>
-            <li><a  href="#">Conférences</a></li>
-            <li><a  href="#">L’association</a></li>
-            <li><a href="profile.html" >Profile</a></li>
-        </ul>
-        </nav>
-        </div>
+
+            <a class="logo" href="index.html">
+                <img src="assets/img/logo.png" alt="Logo">
+            </a>
+
+            <!-- Bouton burger pour mobile --> 
+            <button class="burger-btn" id="burgerBtn">☰</button> 
+
+            <!-- Menu unique --> 
+            <nav class="main-nav" id="navMenu"> 
+                <ul> 
+                    <li><a href="galerie.html">Galerie</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul> 
+            </nav>
+
+        </div> <!-- ✅ FERMETURE DU BON DIV -->
     </header>
 
     <!-- Gallery Section -->
@@ -65,6 +72,20 @@
 
     <!-- Load Java -->
     <script src="assets/js/app.js"></script>
+
+     <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM Ready");
+
+    const btn = document.getElementById("burgerBtn");
+    const menu = document.getElementById("navMenu");
+
+    btn.addEventListener("click", () => {
+        console.log("Toggle");
+        menu.classList.toggle("open");
+    });
+    });
+    </script>   
 </body>
 
 

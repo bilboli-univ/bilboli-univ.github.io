@@ -141,9 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(item);
     }
   }
-
-  // Initialiser tes galeries
-  initGallery("#truc .photo-grid", "assets/img/pour poster/pour poster.json", "assets/img/pour poster");
-  initGallery("#wei .photo-grid", "assets/img/wei/wei.json", "assets/img/wei");
 });
+
+
 

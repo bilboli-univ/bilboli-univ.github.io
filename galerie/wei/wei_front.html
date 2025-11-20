@@ -3,66 +3,85 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wei page — FindMeOnPhoto</title>
+  <title>Wei page</title>
   <link rel="stylesheet" href="../../assets/css/styles.css" />
 </head>
+
 <body>
   <header class="site-header">
-        <div class="container header-inner">
-        <a class="logo" href="../../index.html">
-            <img src="../../assets/img/logo.png" alt="Logo">
-        </a>
-        <nav class="main-nav">
-            <ul>
-            <li><a class="selection" href="../../galerie.html">Galerie</a></li>
-            <li><a  href="#">Millimètre</a></li>
-            <li><a  href="#">Expositions</a></li>
-            <li><a  href="#">Conférences</a></li>
-            <li><a  href="#">L’association</a></li>
-            <li><a href="profile.html" >Profile</a></li>
+    <div class="container header-inner">
+
+      <!-- Logo -->
+      <a class="logo" href="../../index.html">
+        <img src="../../assets/img/logo.png" alt="Logo">
+      </a>
+
+      <!-- Bouton burger (mobile) -->
+      <button class="burger-btn" id="burgerBtn">☰</button>
+
+      <!-- Menu principal unique -->
+      <nav class="main-nav" id="navMenu">
+        <ul>
+          <li><a class="selection" href="../../galerie.html">Galerie</a></li>
+          <li><a href="#">Work in progress 👷‍♀️</a></li>
+          <li><a href="#">Work in progress 👷‍♀️</a></li>
+          <li><a href="#">Work in progress 👷‍♀️</a></li>
+          <li><a href="#">Work in progress 👷‍♀️</a></li>
+          <li><a href="../../profile.html">Profile</a></li>
         </ul>
-        </nav>
-        </div>
-    </header>
+      </nav>
 
-    <!-- Gallery Section -->
-    <!-- PAGE : Galerie -->
-    <section class="gallery page active" id="gallery">
+    </div>
+  </header>
+
+  <!-- PAGE : Galerie WEI -->
+  <section class="gallery page active" id="gallery">
     <div class="container">
-        <h1 class="title-page">Wei</h1>
+      <h1 class="title-page">Wei</h1>
 
-        <section id="gallery-sections" class="sections-grid">
-            <a href="../../galerie/wei.html" data-section="wei" class="section-card">
-                <h3>Soirée Vendredi</h3>
-            </a>
+      <section id="gallery-sections" class="sections-grid">
+        <a href="../../galerie/wei.html" data-section="wei" class="section-card">
+          <h3>Soirée Vendredi</h3>
+        </a>
 
-            <a href="put.html" data-section="soiree_int" class="section-card">
-                <h3>Piscine</h3>
-            </a>
+        <a href="put.html" data-section="soiree_int" class="section-card">
+          <h3>Piscine</h3>
+        </a>
 
-            <a href="danse.html" data-section="danse" class="section-card">
-                <h3>Danse</h3>
-            </a>
+        <a href="danse.html" data-section="danse" class="section-card">
+          <h3>Danse</h3>
+        </a>
 
-            <a href="post.html" data-section="post" class="section-card">
-                <h3>Poste WEI</h3>
-            </a>
+        <a href="post.html" data-section="post" class="section-card">
+          <h3>Poste WEI</h3>
+        </a>
 
-            <a href="galerie/truc.html" data-section="truc" class="section-card">
-                <h3>Work in progress 👷‍♀️</h3>
-            </a>
-
-        </section>
+        <a href="galerie/truc.html" data-section="truc" class="section-card">
+          <h3>Work in progress 👷‍♀️</h3>
+        </a>
+      </section>
     </div>
-    </section>
+  </section>
 
-    <!-- Lightbox overlay -->
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-img" src="" alt="">
-        <a class="lightbox-download-btn" href="" download>⬇ Télécharger</a>
-    </div>
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-img" src="" alt="">
+    <a class="lightbox-download-btn" href="" download>⬇ Télécharger</a>
+  </div>
 
-    <!-- Load Java -->
-    <script src="../../assets/js/app.js"></script>
+  <!-- Script principal -->
+  <script src="../../assets/js/app.js"></script>
+
+  <!-- Script Menu Burger -->
+  <script>
+    const burgerBtn = document.getElementById("burgerBtn");
+    const navMenu = document.getElementById("navMenu");
+
+    burgerBtn.addEventListener("click", () => {
+      navMenu.classList.toggle("open");
+    });
+  </script>
+
 </body>
+</html>

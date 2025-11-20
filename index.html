@@ -9,21 +9,29 @@
 <body>
   <header class="site-header">
         <div class="container header-inner">
-        <a class="logo" href="index.html">
-            <img src="assets/img/logo.png" alt="Logo">
-        </a>
-        <nav class="main-nav">
-            <ul>
-            <li><a  href="galerie.html">Galerie</a></li>
-            <li><a  href="#">Millimètre</a></li>
-            <li><a  href="#">Expositions</a></li>
-            <li><a  href="#">Conférences</a></li>
-            <li><a  href="#">L’association</a></li>
-            <li><a  href="profile.html" >Profile</a></li>
-        </ul>
-        </nav>
-        </div>
+
+            <a class="logo" href="index.html">
+                <img src="assets/img/logo.png" alt="Logo">
+            </a>
+
+            <!-- Bouton burger pour mobile --> 
+            <button class="burger-btn" id="burgerBtn">☰</button> 
+
+            <!-- Menu unique --> 
+            <nav class="main-nav" id="navMenu"> 
+                <ul> 
+                    <li><a href="galerie.html">Galerie</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="#">Work in progress 👷‍♀️</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul> 
+            </nav>
+
+        </div> <!-- ✅ FERMETURE DU BON DIV -->
     </header>
+
 
 
     <!-- Hero Section -->
@@ -60,11 +68,11 @@
                 </a>
 
                 <div class="section-card">
-                    <h3>Conférences</h3>
+                    <h3>Work in progress 👷‍♀️</h3>
                 </div>
 
                 <div class="section-card">
-                    <h3>Truc truc</h3>
+                    <h3>Work in progress 👷‍♀️</h3>
                 </div>
                 </section>
 
@@ -84,6 +92,20 @@
         <small>© 2025 O yeahh</small>
         </div>
     </footer>
+
+   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM Ready");
+
+    const btn = document.getElementById("burgerBtn");
+    const menu = document.getElementById("navMenu");
+
+    btn.addEventListener("click", () => {
+        console.log("Toggle");
+        menu.classList.toggle("open");
+    });
+    });
+    </script>
 
 </body>
 </html>
