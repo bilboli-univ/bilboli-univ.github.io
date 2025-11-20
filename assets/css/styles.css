@@ -23,7 +23,7 @@ html, body {
 
 /* Layout helpers */
 .container {
-  max-width: 1200px;
+  max-width: 90%;
   margin: 0 auto;
   padding: 1rem 2rem;
 }
