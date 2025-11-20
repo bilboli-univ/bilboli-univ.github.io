@@ -1,58 +1,81 @@
-document.addEventListener("DOMContentLoaded", () => {
+// =====================================================
+//  Galerie post — Virtualisation + Thumbnails
+// =====================================================
+(function initPostGallery() {
 
-    const container = document.querySelector("#danse .photo-grid");
+    const container = document.querySelector("#post .photo-grid");
+    if (!container) return;
+
+    let photos = [];
+    let photosPerBatch = 12;
+    let batchIndex = 0;
+    let loading = false;
+
+    // Lightbox globale
     const lightbox = document.getElementById("lightbox");
     const lightboxImg = lightbox.querySelector(".lightbox-img");
     const closeBtn = lightbox.querySelector(".lightbox-close");
     const downloadBtn = lightbox.querySelector(".lightbox-download-btn");
 
-    // Lazy loading
-    const lazyObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src; // charge miniature
-                lazyObserver.unobserve(img);
-            }
-        });
-    }, { rootMargin: "300px" });
+    closeBtn.addEventListener("click", () => (lightbox.style.display = "none"));
+    lightbox.addEventListener("click", e => {
+        if (e.target === lightbox) lightbox.style.display = "none";
+    });
 
     // Charger JSON
     fetch("../../assets/img/post/photos.json")
         .then(r => r.json())
-        .then(files => files.forEach(addPhoto));
+        .then(data => {
+            photos = data;
+            loadNextBatch();
+        })
+        .catch(err => console.error("Erreur JSON danse :", err));
 
-    function addPhoto(file) {
-        const item = document.createElement("div");
-        item.classList.add("photo-item");
+    // Charger un batch de 12 photos
+    function loadNextBatch() {
+        if (loading) return;
+        loading = true;
 
-        const thumb = `../../assets/img/post/thumb/${file}`;
-        const full  = `../../assets/img/post/full/${file}`;
+        const start = batchIndex * photosPerBatch;
+        const end = Math.min(start + photosPerBatch, photos.length);
+        const slice = photos.slice(start, end);
 
-        item.innerHTML = `
-            <img data-src="${thumb}" data-full="${full}" alt="${file}">
-            <a class="download-btn" href="${full}" download="${file}">Télécharger</a>
-        `;
+        slice.forEach(file => {
+            const thumb = `../../assets/img/post/thumb/${file}`;
+            const full  = `../../assets/img/post/full/${file}`;
 
-        const img = item.querySelector("img");
+            const item = document.createElement("div");
+            item.className = "photo-item";
 
-        // Lazy loading
-        lazyObserver.observe(img);
+            item.innerHTML = `
+                <img src="${thumb}" data-full="${full}" alt="${file}" loading="lazy">
+                <a class="download-btn" href="${full}" download="${file}">Télécharger</a>
+            `;
 
-        // Lightbox
-        img.addEventListener("click", () => {
-            lightbox.style.display = "flex";
-            lightboxImg.src = img.dataset.full;
-            downloadBtn.href = img.dataset.full;
-            downloadBtn.download = file;
+            const img = item.querySelector("img");
+
+            // Lightbox
+            img.addEventListener("click", () => {
+                lightbox.style.display = "flex";
+                lightboxImg.src = full;
+                downloadBtn.href = full;
+                downloadBtn.download = file;
+            });
+
+            container.appendChild(item);
         });
 
-        container.appendChild(item);
+        batchIndex++;
+        loading = false;
     }
 
-    // Fermer lightbox
-    closeBtn.addEventListener("click", () => lightbox.style.display = "none");
-    lightbox.addEventListener("click", e => {
-        if (e.target === lightbox) lightbox.style.display = "none";
+    window.addEventListener("scroll", () => {
+        const rect = container.getBoundingClientRect();
+    
+        // Lorsque le bas de la galerie approche du bas de l'écran
+        if (rect.bottom < window.innerHeight + 300) {
+            loadNextBatch();    
+        }
     });
-});
+    
+})();

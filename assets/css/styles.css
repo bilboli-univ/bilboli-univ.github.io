@@ -23,7 +23,7 @@ html, body {
 
 /* Layout helpers */
 .container {
-  max-width: 1200px;
+  max-width: 90%;
   margin: 0 auto;
   padding: 1rem 2rem;
 }
@@ -355,4 +355,134 @@ section h2 {
   background: var(--accent);
 }
 
+/* ==========================================================
+   RESPONSIVE MOBILE / TABLETTE
+   ========================================================== */
+
+/* ---------------------------
+   1) HEADER / NAVIGATION
+   --------------------------- */
+@media (max-width: 900px) {
+
+  .header-inner {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 0.8rem;
+  }
+
+  .main-nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .main-nav a {
+    margin-right: 0;
+    padding: 0.5rem 0.8rem;
+    font-size: 1rem;
+  }
+
+  .logo img {
+    height: 50px;
+  }
+}
+
+/* ---------------------------
+   2) PHOTOS GRID
+   --------------------------- */
+@media (max-width: 900px) {
+  .photo-grid {
+    grid-template-columns: repeat(3, 1fr);  /* tablette 3 colonnes */
+  }
+}
+
+@media (max-width: 700px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);  /* mobile standard 2 colonnes */
+  }
+}
+
+@media (max-width: 420px) {
+  .photo-grid {
+    grid-template-columns: repeat(1, 1fr);  /* petit smartphone 1 colonne */
+  }
+}
+
+/* ---------------------------
+   3) PHOTO ITEM
+   --------------------------- */
+@media (max-width: 700px) {
+
+  .photo-item img {
+    height: 160px; /* réduit la taille sur mobile */
+  }
+
+  .photo-item {
+    border-radius: 10px;
+    padding-bottom: 0.6rem;
+  }
+
+  .download-btn {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
+
+/* ---------------------------
+   4) SECTION CARDS
+   --------------------------- */
+@media (max-width: 700px) {
+  .sections-grid {
+    grid-template-columns: 1fr 1fr; /* 2 cartes par ligne */
+  }
+}
+
+@media (max-width: 480px) {
+  .sections-grid {
+    grid-template-columns: 1fr; /* 1 carte */
+  }
+
+  .section-card h3 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ---------------------------
+   5) HERO SECTION
+   --------------------------- */
+@media (max-width: 700px) {
+  .hero {
+    height: 65vh;
+    background-position: center;
+  }
+
+  .hero-title {
+    font-size: 12vw; /* responsive */
+    letter-spacing: 0.05em;
+  }
+}
+
+/* ---------------------------
+   6) LIGHTBOX MOBILE
+   --------------------------- */
+@media (max-width: 700px) {
+
+  .lightbox-img {
+    max-width: 95%;
+    max-height: 75vh;
+  }
+
+  .lightbox-close {
+    font-size: 2.5rem;
+    top: 10px;
+    right: 15px;
+  }
+
+  .lightbox-download-btn {
+    bottom: 20px;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
 
