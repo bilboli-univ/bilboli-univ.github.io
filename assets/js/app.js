@@ -167,8 +167,9 @@ window.addEventListener('scroll', () => {
   if (currentScroll > lastScroll && currentScroll > threshold) {
     // on descend ET on a dépassé le seuil → cacher
     header.classList.add('hide');
-  } else{ 
-    if (currentScroll > threshold){
+  } 
+  else{ 
+    if (currentScroll <= threshold){
       // on remonte ou on est proche du haut → montrer
       header.classList.remove('hide');
     }

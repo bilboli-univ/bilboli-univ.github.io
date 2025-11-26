@@ -46,36 +46,20 @@ html, body {
 
 .header-inner {
   display: flex;
+  justify-content: space-between; /* logo à gauche, nav prend le reste */
   align-items: center;
-  gap: 60px; 
+  gap: 1rem; 
   background: var(--bg);
 }
 
 .logo img {
-  height: 60px;
-  width: auto;
+  height: 50px;
+  width: 50px;   
   border: 2px solid var(--bordure); 
   border-radius: 8px;                 /* optionnel : arrondir les coins */
-  padding: 1px;                       /* optionnel : espace entre l'image et la bordure */
-}
-
-/* header brand (logo + titre) */
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-.logo-img {
-    width: 48px;         /* taille du logo */
-    height: 48px;
-    object-fit: contain;
-    display: block;
-}
-
-/* titre à côté du logo */
-.logo {
-    margin: 0;
-    font-size: 1.25rem;
+  padding: 1px;     
+  object-fit: contain;    
+  display: block;              /* optionnel : espace entre l'image et la bordure */
 }
 
 /* avatar du profil (dans header profil) */
@@ -183,10 +167,6 @@ main {
   padding-top: 4rem; /* spacing for fixed header */
 }
 
-content{
-  padding-top: 3%;
-}
-
 section {
   padding: 4rem 0;
 }
@@ -227,7 +207,7 @@ section h2 {
   text-align: center;             /* works for <a> and <div> */
   text-decoration: none;
   color: inherit;
-  background: var(--card);
+  background-image: url(../img/bg.png);
   padding: 1rem;
   border-radius: 10px;
   border: 2px solid var(--bordure);
@@ -414,15 +394,27 @@ section h2 {
 }
 
 /* --- MENU DESKTOP --- */
+/* --- MENU DESKTOP --- */
 .main-nav {
+  flex: 1;
   display: flex;
-  gap: 2rem;
+  gap: 5rem;
+  justify-content: center;
 }
 
-.main-nav ul {
+.main-nav > ul {
   list-style: none;
   display: flex;
-  gap: 4rem;
+  justify-content: center; /* centre les boutons horizontalement */
+  align-items: center;     /* centre verticalement */
+  gap: 5rem;               /* espace entre les boutons */
+  margin: 0;
+  padding: 0;
+}
+
+
+.main-nav li {
+  position: relative; /* nécessaire pour le dropdown */
 }
 
 .main-nav a {
@@ -431,8 +423,46 @@ section h2 {
   font-weight: 500;
 }
 
-.main-nav :hover{
+.main-nav a:hover {
   color: var(--accent);
+}
+
+/* Menu déroulant caché */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* juste sous le bouton parent */
+  left: 0;
+  min-width: 150px;
+  display: none; /* caché par défaut */
+  flex-direction: column;
+  z-index: 2000; /* pour passer devant */
+  gap: 1rem;
+  list-style: none;        /* supprime les petits ronds */
+  padding: 0;              /* supprime le retrait par défaut */
+  margin: 0;
+}
+
+.dropdown-menu li {
+  width: 100%;             /* chaque bouton occupe toute la largeur */
+}
+
+.dropdown-menu li a {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--text);
+  border: 2px solid var(--bordure);   /* contour rouge */
+  border-radius: 12px;               /* arrondi */
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(160px);  
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 0;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: flex;
 }
 
 /* --- BOUTON BURGER --- */
@@ -444,7 +474,7 @@ section h2 {
   z-index: 3000;
   background: var(--bordure);
   border: none;
-  color: white;
+  color: var(--text);
   font-size: 2rem;
   border-radius: 6px;
   padding: 4px 10px;
@@ -453,7 +483,11 @@ section h2 {
 
 /* ==== STYLE DU PANNEAU MOBILE ==== */
 @media (max-width: 700px) {
-   .main-nav {
+  .content {
+    margin-top: 5rem; /* plus d’espace sur petit écran */
+  }
+
+  .main-nav {
     flex-direction: column;
     position: fixed;
     top: 1rem;
@@ -491,7 +525,6 @@ section h2 {
     visibility: visible;     /* clickable */
   }
 
-
   /* Style des liens */
   .main-nav ul {
     display: flex;
@@ -502,8 +535,10 @@ section h2 {
 
   .main-nav a {
     font-size: 1.3rem;
-    border: 2px solid var(--accent);   /* contour rouge */
+    color: var(--text);
+    border: 2px solid var(--bordure);   /* contour rouge */
     border-radius: 12px;               /* arrondi */
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(4px);  
     font-weight: 600;
     text-decoration: none;
