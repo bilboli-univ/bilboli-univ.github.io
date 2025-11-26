@@ -1,6 +1,3 @@
-/* ============================
-   FORCER LE TÉLÉCHARGEMENT
-============================ */
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".download-btn");
   if (!btn) return;
@@ -159,6 +156,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+let lastScroll = 0;
+const header = document.querySelector('.site-header');
+const threshold = 200; // seuil en pixels
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+
+  if (currentScroll > lastScroll && currentScroll > threshold) {
+    // on descend ET on a dépassé le seuil → cacher
+    header.classList.add('hide');
+  } else{ 
+    if (currentScroll > threshold){
+      // on remonte ou on est proche du haut → montrer
+      header.classList.remove('hide');
+    }
+  }
+  lastScroll = currentScroll;
+});
+
 
 
 
