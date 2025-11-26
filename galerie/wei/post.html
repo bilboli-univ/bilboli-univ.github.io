@@ -34,6 +34,8 @@
     </div>
   </header>
 
+  <div class="nav-overlay" id="navOverlay"></div>
+
   <!-- PAGE Piscine -->
   <section id="post" class="page active">
     <div class="container">
@@ -56,9 +58,16 @@
   <script>
     const burgerBtn = document.getElementById("burgerBtn");
     const navMenu = document.getElementById("navMenu");
+    const overlay = document.getElementById("navOverlay");
 
     burgerBtn.addEventListener("click", () => {
       navMenu.classList.toggle("open");
+      overlay.classList.toggle("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      overlay.classList.remove("show");
     });
   </script>
 

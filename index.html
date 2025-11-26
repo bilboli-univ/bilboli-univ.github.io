@@ -28,11 +28,10 @@
                     <li><a href="profile.html">Profile</a></li>
                 </ul> 
             </nav>
-
-        </div> <!-- ✅ FERMETURE DU BON DIV -->
+        </div>
     </header>
 
-
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -93,19 +92,8 @@
         </div>
     </footer>
 
-   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM Ready");
-
-    const btn = document.getElementById("burgerBtn");
-    const menu = document.getElementById("navMenu");
-
-    btn.addEventListener("click", () => {
-        console.log("Toggle");
-        menu.classList.toggle("open");
-    });
-    });
-    </script>
+    <!-- Load Java -->
+    <script src="assets/js/app.js"></script>
 
 </body>
 </html>

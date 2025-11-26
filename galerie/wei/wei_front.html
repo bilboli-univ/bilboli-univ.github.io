@@ -22,7 +22,7 @@
       <!-- Menu principal unique -->
       <nav class="main-nav" id="navMenu">
         <ul>
-          <li><a href="../../galerie.html">Galerie</a></li>
+          <li><a class="selection" href="../../galerie.html">Galerie</a></li>
           <li><a href="#">Work in progress </a></li>
           <li><a href="#">Work in progress </a></li>
           <li><a href="#">Work in progress </a></li>
@@ -33,6 +33,8 @@
 
     </div>
   </header>
+
+  <div class="nav-overlay" id="navOverlay"></div>
 
   <!-- PAGE : Galerie WEI -->
   <section class="gallery page active" id="gallery">
@@ -72,16 +74,6 @@
 
   <!-- Script principal -->
   <script src="../../assets/js/app.js"></script>
-
-  <!-- Script Menu Burger -->
-  <script>
-    const burgerBtn = document.getElementById("burgerBtn");
-    const navMenu = document.getElementById("navMenu");
-
-    burgerBtn.addEventListener("click", () => {
-      navMenu.classList.toggle("open");
-    });
-  </script>
 
 </body>
 </html>

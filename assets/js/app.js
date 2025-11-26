@@ -47,6 +47,23 @@ function setQuerySection(section) {
 
 document.addEventListener("DOMContentLoaded", () => {
   // ============================
+  // Menu burger click
+  // ============================
+  const burgerBtn = document.getElementById("burgerBtn");
+  const navMenu = document.getElementById("navMenu");
+  const overlay = document.getElementById("navOverlay");
+
+  burgerBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+    overlay.classList.toggle("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    navMenu.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+
+  // ============================
   // Navigation / cartes (GARDER)
   // ============================
   document.querySelectorAll(".section-card").forEach(card => {

@@ -34,13 +34,15 @@
     </div>
   </header> 
 
-    <!-- PAGE : inté -->
-    <section id="soiree_int" class="page.active">
-      <div class="container">
-          <h2>Photos -Soirée s'intégration</h2>
-          <div class="photo-grid"></div>
-      </div>
-    </section>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- PAGE : inté -->
+  <section id="soiree_int" class="page.active">
+    <div class="container">
+        <h2>Photos -Soirée s'intégration</h2>
+        <div class="photo-grid"></div>
+    </div>
+  </section>
 
     <!-- LIGHTBOX -->
   <div id="lightbox" class="lightbox">
@@ -56,9 +58,16 @@
   <script>
     const burgerBtn = document.getElementById("burgerBtn");
     const navMenu = document.getElementById("navMenu");
+    const overlay = document.getElementById("navOverlay");
 
     burgerBtn.addEventListener("click", () => {
       navMenu.classList.toggle("open");
+      overlay.classList.toggle("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      overlay.classList.remove("show");
     });
   </script>
 </body>

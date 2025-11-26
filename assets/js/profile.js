@@ -149,6 +149,9 @@
     const addBtn = document.getElementById('addPhotoBtn');
     const gallery = document.getElementById('photoGallery');
     const editBtn = document.getElementById('editProfileBtn');
+    const burgerBtn = document.getElementById("burgerBtn");
+    const navMenu = document.getElementById("navMenu");
+    const overlay = document.getElementById("navOverlay");
 
     const hiddenInput = createHiddenFileInput();
 
@@ -179,6 +182,19 @@
     renderGallery().catch(err => {
       console.error('Erreur gallery:', err);
       gallery.innerHTML = '<p>Impossible de charger les photos.</p>';
+    });
+
+    // ============================
+    // Menu burger click
+    // ===========================
+    burgerBtn.addEventListener("click", () => {
+      navMenu.classList.toggle("open");
+      overlay.classList.toggle("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      overlay.classList.remove("show");
     });
   });
 })();

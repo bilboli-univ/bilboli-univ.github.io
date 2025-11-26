@@ -82,79 +82,6 @@ html, body {
     display: block;
 }
 
-/* --- MENU DESKTOP --- */
-.main-nav {
-  display: flex;
-  gap: 2rem;
-}
-
-.main-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
-
-.main-nav a {
-  text-decoration: none;
-  color: var(--textbar);
-  font-weight: 500;
-}
-
-/* --- BOUTON BURGER --- */
-.burger-btn {
-  display: none;
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 3000;
-  background: var(--accent);
-  border: none;
-  color: white;
-  font-size: 2rem;
-  border-radius: 6px;
-  padding: 4px 10px;
-  cursor: pointer;
-}
-
-/* --- MOBILE --- */
-@media (max-width: 700px) {
-  
-  .burger-btn {
-    display: block;
-  }
-
-  /* Le menu est masqué par défaut */
-  .main-nav {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    right: 0;
-    
-    width: 70%;
-    height: 100%;
-    background: white;
-
-    padding-top: 80px;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-
-    transform: translateX(100%);
-    transition: transform .3s ease;
-    z-index: 2500;
-  }
-
-  /* Quand toggled → visible */
-  .main-nav.open {
-    transform: translateX(0);
-  }
-
-  .main-nav ul {
-    flex-direction: column;
-    gap: 1.5rem;
-    padding-left: 20px;
-  }
-}
-
 /* Grille de photos */
 .photo-grid {
   display: grid;
@@ -477,9 +404,47 @@ section h2 {
   }
 }
 
+/* --- MENU DESKTOP --- */
+.main-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 4rem;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--textbar);
+  font-weight: 500;
+}
+
+.main-nav :hover{
+  color: var(--accent);
+}
+
+/* --- BOUTON BURGER --- */
+.burger-btn {
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 3000;
+  background: var(--bordure);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
 /* ==== STYLE DU PANNEAU MOBILE ==== */
 @media (max-width: 700px) {
-  .main-nav {
+   .main-nav {
     display: none;
     flex-direction: column;
     position: fixed;
@@ -488,21 +453,34 @@ section h2 {
     width: 75%;
     max-width: 300px;
     height: 100%;
-    background: var(--bg); /* fond blanc légèrement opaque */
-    backdrop-filter: blur(6px); /* effet verre dépoli (super stylé) */
-    padding-top: 80px;
+    background-color: #1b1616; /* solid dark */
+    padding-top: 4.5%;
     padding-left: 20px;
     box-shadow: -4px 0 15px rgba(0,0,0,0.2);
     transform: translateX(100%);
     transition: transform 0.35s ease;
-    z-index: 1990;
+    z-index: 2000;
   }
 
   .main-nav.open {
     display: flex;
-    background: var(--bg);
     transform: translateX(0);
   }
+
+  /* Optional overlay */
+  .nav-overlay {
+    position: fixed;
+    top: 0; /* leave header visible */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(27, 22, 22, 0.4);
+    backdrop-filter:blur(10px);
+    display: none;
+    z-index: 100;
+  }
+
+  .nav-overlay.show { display: block; }
 
   /* Style des liens */
   .main-nav ul {
@@ -514,7 +492,9 @@ section h2 {
 
   .main-nav a {
     font-size: 1.3rem;
-    color: #790404;             /* texte rouge bordeaux pour rester dans ton thème */
+    border: 2px solid var(--accent);   /* contour rouge */
+    border-radius: 12px;               /* arrondi */
+    backdrop-filter: blur(4px);  
     font-weight: 600;
     text-decoration: none;
     padding: 10px 0;
@@ -522,14 +502,14 @@ section h2 {
   }
 
   .main-nav a:hover {
-    color: #a00000;
+    color: var(--accent);
     transform: translateX(5px);
   }
 
   /* Bouton burger stylé */
   .burger-btn {
     display: block;
-    background: #790404;
+    background: var(--bordure);
     color: white;
     font-size: 2rem;
     padding: 6px 12px;
@@ -541,7 +521,7 @@ section h2 {
   }
 
   .burger-btn:hover {
-    background: #a00000;
+    background: var(--accent);
     transform: scale(1.05);
   }
 }

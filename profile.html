@@ -29,8 +29,10 @@
                 </ul> 
             </nav>
 
-        </div> <!-- ✅ FERMETURE DU BON DIV -->
+        </div>
     </header>
+
+    <div class="nav-overlay" id="navOverlay"></div>
 
 
   <main class="container profile-page">
@@ -59,16 +61,18 @@
   <script src="assets/js/profile.js"></script>
 
    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM Ready");
+    const burgerBtn = document.getElementById("burgerBtn");
+    const navMenu = document.getElementById("navMenu");
+    const overlay = document.getElementById("navOverlay");
 
-    const btn = document.getElementById("burgerBtn");
-    const menu = document.getElementById("navMenu");
-
-    btn.addEventListener("click", () => {
-        console.log("Toggle");
-        menu.classList.toggle("open");
+    burgerBtn.addEventListener("click", () => {
+      navMenu.classList.toggle("open");
+      overlay.classList.toggle("show");
     });
+
+    overlay.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      overlay.classList.remove("show");
     });
     </script>
 </body>
