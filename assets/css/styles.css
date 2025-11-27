@@ -56,8 +56,7 @@ html, body {
   height: 50px;
   width: 50px;   
   border: 2px solid var(--bordure); 
-  border-radius: 8px;                 /* optionnel : arrondir les coins */
-  padding: 1px;     
+  border-radius: 8px;                 /* optionnel : arrondir les coins */   
   object-fit: contain;    
   display: block;              /* optionnel : espace entre l'image et la bordure */
 }
@@ -462,9 +461,16 @@ section h2 {
   .dropdown:hover .dropdown-menu {
     display: flex;
   }
-
   .dropdown > a::after {
     content: " ▾";
+  }
+
+  .main-nav a {
+    font-size: 1.4rem;       /* texte plus grand */
+    padding: 15px 25px;      /* plus d’espace autour du texte */
+    min-height: 50px;        /* hauteur minimale uniforme */
+    line-height: 50px;       /* centre le texte verticalement */
+    border-radius: 12px;     /* arrondi si tu veux garder le style */
   }
 }
 
@@ -493,12 +499,12 @@ section h2 {
   .main-nav {
     flex-direction: column;
     position: fixed;
-    top: 10.2rem;
+    top: 0;
     right: 0;
     width: 75%;
     max-width: 300px;
     height: 100%;
-    padding-top: 4.5%;
+    padding-top: 21.5%;
     padding-left: 20px;
     transform: translateX(100%);
     transition: transform 0.35s ease;

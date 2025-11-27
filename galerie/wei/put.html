@@ -31,23 +31,6 @@
   <!-- SCRIPT Piscine -->
   <script src="../../assets/js/put.js"></script>
 
-  <!-- SCRIPT MENU BURGER -->
-  <script>
-    const burgerBtn = document.getElementById("burgerBtn");
-    const navMenu = document.getElementById("navMenu");
-    const overlay = document.getElementById("navOverlay");
-
-    burgerBtn.addEventListener("click", () => {
-      navMenu.classList.toggle("open");
-      overlay.classList.toggle("show");
-    });
-
-    overlay.addEventListener("click", () => {
-      navMenu.classList.remove("open");
-      overlay.classList.remove("show");
-    });
-  </script>
-
   <!-- Script pour charger le menu -->
     <script>
     fetch("../../menu.html")

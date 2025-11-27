@@ -19,7 +19,7 @@
       <h1 class="title-page">Wei</h1>
 
       <section id="gallery-sections" class="sections-grid">
-        <a href="../../galerie/wei.html" data-section="wei" class="section-card">
+        <a href="/galerie/wei/wei.html" data-section="wei" class="section-card">
           <h3>Soirée Vendredi</h3>
         </a>
 
@@ -54,7 +54,7 @@
 
   <!-- Script pour charger le menu -->
     <script>
-    fetch("../../menu.html")
+    fetch("/menu.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("menu-placeholder").innerHTML = data;
@@ -64,6 +64,5 @@
         document.body.appendChild(script);
       });
     </script>
-
 </body>
 </html>

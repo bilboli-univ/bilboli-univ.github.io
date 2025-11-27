@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Photos Vendredi</title>
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 
 <body>
@@ -29,28 +29,11 @@
   </div>
 
   <!-- SCRIPT WEI -->
-  <script src="../assets/js/wei.js"></script>
-
-  <!-- Script Menu Burger -->
-  <script>
-    const burgerBtn = document.getElementById("burgerBtn");
-    const navMenu = document.getElementById("navMenu");
-    const overlay = document.getElementById("navOverlay");
-
-    burgerBtn.addEventListener("click", () => {
-      navMenu.classList.toggle("open");
-      overlay.classList.toggle("show");
-    });
-
-    overlay.addEventListener("click", () => {
-      navMenu.classList.remove("open");
-      overlay.classList.remove("show");
-    });
-  </script>
+  <script src="/assets/js/wei.js"></script>
 
   <!-- Script pour charger le menu -->
     <script>
-    fetch("../menu.html")
+    fetch("/menu.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("menu-placeholder").innerHTML = data;

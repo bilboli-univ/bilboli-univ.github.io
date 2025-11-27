@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Gallerie</title>
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 <body>
   <!-- Ici le menu sera injecté -->
@@ -19,23 +19,23 @@
         <h1 class="title-page">Galerie</h1>
 
         <section id="gallery-sections" class="sections-grid">
-            <a href="galerie/wei/wei_front.html" class="section-card">
+            <a href="/galerie/wei/wei_front.html" class="section-card">
                 <h3>Wei</h3>
             </a>
 
-            <a href="galerie/soiree_int.html" data-section="soiree_int" class="section-card">
+            <a href="/galerie/soiree_int.html" data-section="soiree_int" class="section-card">
                 <h3>Soirée d'intégration</h3>
             </a>
 
-            <a href="galerie/truc.html" data-section="truc" class="section-card">
+            <a href="/galerie/truc.html" data-section="truc" class="section-card">
                 <h3>Work in progress 👷‍♀️</h3>
             </a>
 
-            <a href="galerie/truc.html" data-section="truc" class="section-card">
+            <a href="/galerie/truc.html" data-section="truc" class="section-card">
                 <h3>Work in progress 👷‍♀️</h3>
             </a>
 
-            <a href="galerie/truc.html" data-section="truc" class="section-card">
+            <a href="/galerie/truc.html" data-section="truc" class="section-card">
                 <h3>Work in progress 👷‍♀️</h3>
             </a>
 
@@ -51,11 +51,11 @@
     </div>
 
     <!-- Load Java -->
-    <script src="assets/js/app.js"></script>
+    <script src="/assets/js/app.js"></script>
 
     <!-- Script pour charger le menu -->
     <script>
-    fetch("menu.html")
+    fetch("/menu.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("menu-placeholder").innerHTML = data;
