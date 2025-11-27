@@ -8,31 +8,8 @@
 </head>
 
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-
-      <!-- Logo -->
-      <a class="logo" href="../index.html">
-        <img src="../assets/img/logo.png" alt="Logo">
-      </a>
-
-      <!-- Bouton burger (mobile) -->
-      <button class="burger-btn" id="burgerBtn">☰</button>
-
-      <!-- Menu principal unique -->
-      <nav class="main-nav" id="navMenu">
-        <ul>
-          <li><a href="../galerie.html">Galerie</a></li>
-          <li><a href="#">Work in progress </a></li>
-          <li><a href="#">Work in progress </a></li>
-          <li><a href="#">Work in progress </a></li>
-          <li><a href="#">Work in progress </a></li>
-          <li><a href="../profile.html">Profile</a></li>
-        </ul>
-      </nav>
-
-    </div>
-  </header>
+  <!-- Ici le menu sera injecté -->
+  <div id="menu-placeholder"></div>
 
   <div class="nav-overlay" id="navOverlay"></div>
 
@@ -70,5 +47,18 @@
       overlay.classList.remove("show");
     });
   </script>
+
+  <!-- Script pour charger le menu -->
+    <script>
+    fetch("../menu.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("menu-placeholder").innerHTML = data;
+        // Charger la logique du menu une fois injecté
+        const script = document.createElement("script");
+        script.src = "/assets/js/menu.js";
+        document.body.appendChild(script);
+      });
+    </script>
 </body>
 </html>

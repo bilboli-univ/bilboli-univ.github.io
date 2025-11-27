@@ -394,7 +394,6 @@ section h2 {
 }
 
 /* --- MENU DESKTOP --- */
-/* --- MENU DESKTOP --- */
 .main-nav {
   flex: 1;
   display: flex;
@@ -411,7 +410,6 @@ section h2 {
   margin: 0;
   padding: 0;
 }
-
 
 .main-nav li {
   position: relative; /* nécessaire pour le dropdown */
@@ -460,9 +458,14 @@ section h2 {
   text-align: center;
   transition: 0.2s ease;
 }
+@media (min-width: 701px) {
+  .dropdown:hover .dropdown-menu {
+    display: flex;
+  }
 
-.dropdown:hover .dropdown-menu {
-  display: flex;
+  .dropdown > a::after {
+    content: " ▾";
+  }
 }
 
 /* --- BOUTON BURGER --- */
@@ -490,7 +493,7 @@ section h2 {
   .main-nav {
     flex-direction: column;
     position: fixed;
-    top: 1rem;
+    top: 10.2rem;
     right: 0;
     width: 75%;
     max-width: 300px;
@@ -529,19 +532,35 @@ section h2 {
   .main-nav ul {
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    padding: 0;
+    align-items: stretch;     /* clé pour étirer chaque item */
+    width: 100%;
+    gap: 0; 
+  }
+
+  .main-nav li {
+    display: block;
+    width: 100%;
+    flex: 0 0 auto; 
+  }
+
+  /* Optionnel: un espacement régulier entre les boutons */
+  .main-nav li + li {
+    margin-top: 25px;
   }
 
   .main-nav a {
+    display: block;
+    width: 75%;              /* occupe toute la largeur du panneau */
+    box-sizing: border-box;   /* inclut bordures/padding dans la largeur */
+    text-align: center;
     font-size: 1.3rem;
     color: var(--text);
     border: 2px solid var(--bordure);   /* contour rouge */
-    border-radius: 12px;               /* arrondi */
+    border-radius: 12px;               /* arrondi */  
     background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(4px);  
     font-weight: 600;
-    text-decoration: none;
+    text-decoration: none;      
     padding: 10px 0;
     transition: 0.2s ease;
   }
@@ -549,6 +568,20 @@ section h2 {
   .main-nav a:hover {
     color: var(--accent);
     transform: translateX(5px);
+  }
+
+  /* Menu déroulant caché par défaut */
+  .dropdown-menu {
+    display: none !important;
+    position: static !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Supprime la flèche ▾ en mobile */
+  .dropdown > a::after {
+    content: none !important;
   }
 
   /* Bouton burger stylé */
