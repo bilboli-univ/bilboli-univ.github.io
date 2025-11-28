@@ -1,7 +1,7 @@
 /* General resets */
 :root{ 
   --bg:#1b1616; --accent:#be2e2e; --text:#ffffff; --bordure:#790404;
-  --textbar:#ffffff; --card : #ffffff; 
+  --textbar:#ffffff; --card : #ffffff; --header-height: 85px; /* valeur par défaut, remplacée par JS */
 }
 * {
   margin: 0;
@@ -13,7 +13,7 @@ html, body {
   height: 100%;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: #222;
-  background-color:#ffffff;
+  background-color: #ffffff; /* même fond que le header */
 }
 
 .selection {
@@ -33,6 +33,7 @@ html, body {
   position: fixed;
   top: 0;
   width: 100%;
+  height: var(--header-height);
   background: var(--bg);
   border-bottom: 3px solid var(--bordure);
   z-index: 1000;
@@ -128,14 +129,36 @@ html, body {
 
 /* Hero section */
 .hero {
-  height: 100vh;
+  /* L'image de fond */
+  background-image: url("../img/bg.png");
+  background-repeat: no-repeat;       /* pas de répétition */
+  background-position: center top;    /* centrée en haut */
+  background-size: auto;              /* garde la taille originale */
+
+  /* Le bloc prend seulement la hauteur de l'image */
+  width: 100%;
+  height: auto;                       /* pas de 100vh */
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../img/bg.png"); /* Replace with background-image later */
-  background-size: cover;
-  background-position: center;
   text-align: center;
+}
+
+/* Pour que l'image ne dépasse pas */
+.hero img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero-title {
+  font-size: 3rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.1em;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-content {
@@ -151,14 +174,6 @@ html, body {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.3); /* optional overlay */
-}
-
-.hero-title {
-  font-size: 10vw;
-  text-transform: uppercase;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: 0.1em;
 }
 
 /* Main content */
@@ -427,7 +442,7 @@ section h2 {
 /* Menu déroulant caché */
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* juste sous le bouton parent */
+  top: var(--header-height); /* juste sous le bouton parent */
   left: 0;
   min-width: 150px;
   display: none; /* caché par défaut */
@@ -457,6 +472,7 @@ section h2 {
   text-align: center;
   transition: 0.2s ease;
 }
+
 @media (min-width: 701px) {
   .dropdown:hover .dropdown-menu {
     display: flex;
@@ -499,12 +515,12 @@ section h2 {
   .main-nav {
     flex-direction: column;
     position: fixed;
-    top: 0;
+    top: calc(70% + var(--header-height)); /* commence sous le header */
+    height: calc(100% - var(--header-height)); /* occupe le reste de l’écran */
     right: 0;
     width: 75%;
+    margin: 0;
     max-width: 300px;
-    height: 100%;
-    padding-top: 21.5%;
     padding-left: 20px;
     transform: translateX(100%);
     transition: transform 0.35s ease;
@@ -517,7 +533,7 @@ section h2 {
 
   .nav-overlay {
     position: fixed;
-    top: 1px; /* leave header visible */
+    top: var(--header-height); /* overlay commence aussi sous le header */
     left: 0;
     right: 0;
     bottom: 0;
