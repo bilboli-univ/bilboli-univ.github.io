@@ -28,6 +28,12 @@ html, body {
   padding: 1rem 2rem;
 }
 
+p {
+  white-space: pre-wrap;         /* conserve les sauts de ligne */
+  max-width: 500px;              /* optionnel : limite la largeur du texte */
+  text-align: right;             /* aligne le texte à droite */
+}
+
 /* Header */
 .site-header {
   position: fixed;
@@ -51,6 +57,12 @@ html, body {
   align-items: center;
   gap: 1rem; 
   background: var(--bg);
+}
+
+.logo {
+  display: inline-block;   /* le lien prend seulement la taille de son contenu */
+  width: auto;             /* largeur = image */
+  height: auto;            /* hauteur = image */
 }
 
 .logo img {
@@ -183,7 +195,7 @@ section h2 {
 }
 
 .center-text {
-  text-align: center;
+  text-align: left;
   margin: 0 auto;        /* centre le bloc horizontalement */
   max-width: 720px;      /* limite la largeur pour une meilleure lecture */
   line-height: 1.5;
