@@ -132,10 +132,10 @@ html, body {
 /* Hero section */
 .hero {
   /* L'image de fond */
-  background-image: url("/assets/img/bg.png");
+  background-image: url("/assets/img/bg_sciences.png");
   background-repeat: no-repeat;       /* pas de répétition */
   background-position: center top;    /* centrée en haut */
-  background-size: contain;              /* garde la taille originale */
+  background-size: cover;              /* garde la taille originale */
   width: 100%;
   height: 100vh;                       /* pas de 100vh */
   display: flex;
