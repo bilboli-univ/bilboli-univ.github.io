@@ -225,7 +225,7 @@ section h2 {
   text-align: center;             /* works for <a> and <div> */
   text-decoration: none;
   color: inherit;
-  background-image: url(../img/bg.png);
+  background:var(--card);
   padding: 1rem;
   border-radius: 10px;
   border: 2px solid var(--bordure);
