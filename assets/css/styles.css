@@ -31,7 +31,7 @@ html, body {
 p {
   white-space: pre-wrap;         /* conserve les sauts de ligne */
   max-width: 500px;              /* optionnel : limite la largeur du texte */
-  text-align: right;             /* aligne le texte à droite */
+  text-align: left;             /* aligne le texte à droite */
 }
 
 /* Header */
@@ -40,6 +40,7 @@ p {
   top: 0;
   width: 100%;
   height: var(--header-height);
+  
   background: var(--bg);
   border-bottom: 3px solid var(--bordure);
   z-index: 1000;
@@ -71,7 +72,7 @@ p {
   border: 2px solid var(--bordure); 
   border-radius: 8px;                 /* optionnel : arrondir les coins */   
   object-fit: contain;    
-  display: block;              /* optionnel : espace entre l'image et la bordure */
+  display: block;           
 }
 
 
@@ -415,7 +416,6 @@ section h2 {
 .main-nav {
   flex: 1;
   display: flex;
-  gap: 5rem;
   justify-content: center;
 }
 
@@ -424,7 +424,7 @@ section h2 {
   display: flex;
   justify-content: center; /* centre les boutons horizontalement */
   align-items: center;     /* centre verticalement */
-  gap: 5rem;               /* espace entre les boutons */
+  gap: 15rem;               /* espace entre les boutons */
   margin: 0;
   padding: 0;
 }

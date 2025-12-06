@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mentions légales – FindMeOnPhoto</title>
+  <link rel="stylesheet" href="/assets/css/mentions.css" />
+</head>
+
+<body>
+  <main class="intro">
+    <div class="container">
+      <div class="section-card">
+
+        <h1>Mentions légales</h1>
+        <p><strong>Dernière mise à jour :</strong> [date à compléter]</p>
+
+        <h2>1. Éditeur du site</h2>
+        <p>
+          Le site <strong>FindMeOnPhoto</strong> est édité par le
+          <strong>Bureau des Étudiants Sciences Montpellier</strong>, association étudiante
+          rattachée à la Faculté des Sciences de Montpellier.<br>
+          <strong>Association :</strong> BDE Sciences Montpellier<br>
+          <strong>Statut :</strong> Association étudiante loi 1901<br>
+          <strong>Adresse :</strong> [adresse postale à compléter]<br>
+          <strong>E-mail :</strong> [adresse e-mail à compléter]
+        </p>
+
+        <h2>2. Responsable de la publication</h2>
+        <p>
+          Le responsable de la publication est le/la président(e) du BDE Sciences Montpellier
+          ou son représentant légal.<br>
+          <strong>Responsable de la publication :</strong> [Nom Prénom – à compléter]
+        </p>
+
+        <h2>3. Hébergement du site</h2>
+        <p>
+          Le site est hébergé par :<br> 
+          <strong>GitHub Pages</strong><br>
+          GitHub, Inc.<br>
+          88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis<br>
+          <a href="https://pages.github.com/">👉 https://pages.github.com/ 👈</a><br>
+          Les données peuvent être hébergées en Europe ou aux États-Unis selon la configuration
+          des services utilisés. Le BDE s’engage à utiliser des prestataires offrant des garanties
+          suffisantes en matière de protection des données.
+        </p>
+
+        <h2>4. Propriété intellectuelle</h2>
+        <p>
+          L’ensemble des contenus présents sur le site FindMeOnPhoto (textes, images, logos,
+          photos, éléments graphiques, structure du site, etc.) est protégé par le droit
+          d’auteur et la législation française.
+        </p>
+        <p>
+          Toute reproduction, distribution, modification ou utilisation sans autorisation
+          préalable du BDE Sciences Montpellier est interdite.
+        </p>
+
+        <h2>5. Photos et droit à l’image</h2>
+        <p>
+          Les photos publiées sur FindMeOnPhoto sont prises lors d’événements organisés par
+          le BDE Sciences Montpellier. Les étudiants peuvent apparaître sur ces photos.<br>
+          Conformément au droit à l’image, toute personne peut demander :
+        <ul>
+          <li>la suppression d’une photo la concernant ;</li>
+          <li>la suppression d’un album ;</li>
+          <li>la limitation de diffusion d’une image.</li>
+        </ul>
+          Pour exercer ce droit, contactez-nous à :<br>
+          <strong>[adresse e-mail à compléter]</strong>
+        </p>
+
+        <h2>6. Comptes utilisateurs</h2>
+        <p>
+          L’accès à certaines fonctionnalités du site (téléchargement, accès aux albums,
+          participation à des événements, etc.) peut nécessiter la création d’un compte
+          étudiant via une adresse e-mail universitaire.<br>
+          Les utilisateurs sont responsables de la confidentialité de leurs identifiants.
+        </p>
+
+        <h2>7. Responsabilité</h2>
+        <p>
+          Le BDE Sciences Montpellier s’efforce d’assurer l’exactitude et la mise à jour
+          des informations diffusées sur le site. Toutefois, il ne peut garantir l’absence
+          totale d’erreurs ou d’omissions.<br>
+          Le BDE ne pourra être tenu responsable :
+        </p>
+        <ul>
+          <li>en cas d’interruption du site ;</li>
+          <li>en cas de dysfonctionnement technique ;</li>
+          <li>en cas d’utilisation inappropriée du site par un utilisateur ;</li>
+          <li>en cas de contenu publié par erreur ou par un tiers.</li>
+        </ul>
+
+        <h2>8. Liens externes</h2>
+        <p>
+          Le site peut contenir des liens vers des sites tiers. Le BDE Sciences Montpellier
+          n’est pas responsable du contenu de ces sites externes.
+        </p>
+
+        <h2>9. Données personnelles</h2>
+        <p>
+          Le traitement des données personnelles est détaillé dans notre
+          <a href="/confidentialite.html">Politique de confidentialité</a>.
+        </p>
+
+        <h2>10. Contact</h2>
+        <p>
+          Pour toute question concernant ces mentions légales, vous pouvez nous contacter à :
+        </p>
+        <p>
+          📧 <strong>[adresse e-mail à compléter]</strong><br>
+          📍 <em>[adresse postale – facultatif]</em>
+        </p>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- SCRIPTS -->
+  <script src="/assets/js/app.js"></script>
+  <script>
+    fetch("/menu.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("menu-placeholder").innerHTML = html;
+        const script = document.createElement("script");
+        script.src = "/assets/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+/* ================================
+   STYLE SPÉCIAL MENTIONS LÉGALES
+   ================================ */
+h1 {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+/* Conteneur principal */
+.section-card {
+  max-width: 750px;        /* largeur idéale pour lecture */
+  margin: 3rem auto;       /* centre le bloc */
+  padding: 0 1.5rem;       /* marge interne */
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;             /* espace entre les éléments */
+}
+
+/* Titres */
+.section-card h1,
+.section-card h2,
+.section-card h3 {
+  text-align: left;
+  margin: 1.5rem 0 0.5rem 0;
+  font-weight: 700;
+}
+
+/* Paragraphes */
+.section-card p {
+  text-align: left;
+  line-height: 1.7;
+  white-space: break-spaces;   /* garde les retours à la ligne sans bug */
+  word-break: break-word;
+  margin: 0;
+}
+
+/* Listes */
+.section-card ul {
+  margin: 0.5rem 0 1rem 1.5rem; /* indentation propre */
+  padding: 0;
+  list-style-type: disc;
+}
+
+.section-card li {
+  margin-bottom: 0.4rem;
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* Liens */
+.section-card a {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.section-card a:hover {
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .section-card {
+    max-width: 90%;
+    padding: 0 1rem;
+  }
+}
