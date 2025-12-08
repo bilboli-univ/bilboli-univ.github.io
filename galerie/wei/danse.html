@@ -21,12 +21,15 @@
     </div>
   </section>
 
-  <!-- LIGHTBOX -->
   <div id="lightbox" class="lightbox">
-      <span class="lightbox-close">&times;</span>
-      <img class="lightbox-img" src="" alt="">
-      <a class="lightbox-download-btn" href="" download>📥 Télécharger</a>
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-img" src="" alt="">
+    <a class="lightbox-download-btn" href="" download>📥 Télécharger</a>
+
+    <!-- ✅ Bouton signalement -->
+    <button class="lightbox-report-btn" onclick="openReportModal()">🚩 Signaler cette photo</button>
   </div>
+
 
   <!-- SCRIPT Piscine -->
   <script src="../../assets/js/danse.js"></script>
@@ -44,6 +47,30 @@
       });
     </script>
 
+  <!-- ✅ Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+
+  <!-- ✅ Config + Auth -->
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/auth.js"></script>
+
+  <!-- ✅ Protection de la page -->
+  <script src="/assets/js/protect.js"></script>
+  <script src="/assets/js/report.js"></script>
+
+  <div id="reportModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Signaler une photo</h3>
+      <p>Explique brièvement pourquoi cette photo doit être signalée :</p>
+
+      <textarea id="reportReason" placeholder="Raison du signalement..."></textarea>
+
+      <button onclick="submitReport()">Envoyer</button>
+      <button onclick="closeReportModal()">Annuler</button>
+    </div>
+  </div>
 </body>
 </html>

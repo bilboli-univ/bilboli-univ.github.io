@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="/assets/js/firebase-config.js"></script>
+  <script src="/assets/js/auth.js"></script>
+</head>
+<body>
+
+  <h1>Créer un compte étudiant</h1>
+
+  <input id="email" type="email" placeholder="Adresse @etu.umontpellier.fr">
+  <input id="password" type="password" placeholder="Mot de passe">
+  <button onclick="registerStudent()">Créer mon compte</button>
+
+  <p>Déjà un compte ? <a href="/login.html">Connexion</a></p>
+
+</body>
+</html>

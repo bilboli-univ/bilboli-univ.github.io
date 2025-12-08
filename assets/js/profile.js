@@ -198,3 +198,20 @@
     });
   });
 })();
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    // Affiche l'email
+    document.getElementById("profileEmail").textContent = user.email;
+
+    // Affiche un nom (si Google ou Microsoft)
+    document.getElementById("profileName").textContent =
+      user.displayName || "Étudiant";
+
+    // Affiche la photo de profil Google/Microsoft si dispo
+    if (user.photoURL) {
+      document.getElementById("profileAvatar").src = user.photoURL;
+    }
+  }
+});
+

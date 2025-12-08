@@ -23,6 +23,8 @@
         </div>
         <div style="margin-left:auto">
           <button id="editProfileBtn" class="btn">Éditer le Profil</button>
+          <button onclick="logout()" class="btn">Déconnexion</button>
+          <button onclick="deleteAccount()" class="danger-btn">Supprimer mon compte</button>          
         </div>
       </div>
 
@@ -35,6 +37,19 @@
       </div>
     </section>
   </main>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <!-- Config Firebase -->
+  <script src="/assets/js/firebase-config.js"></script>
+
+  <!-- Auth logic -->
+  <script src="/assets/js/auth.js"></script>
+
+  <!-- Protection de la page -->
+  <script src="/assets/js/protect.js"></script>
 
   <script src="assets/js/profile.js"></script>
   
