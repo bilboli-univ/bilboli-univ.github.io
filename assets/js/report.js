@@ -24,6 +24,11 @@ function submitReport() {
     return;
   }
 
+  if (reason.length < 5) {
+    alert("Merci de donner une raison plus détaillée.");
+    return;
+    }
+
   if (!user) {
     alert("Vous devez être connecté pour signaler une photo.");
     return;

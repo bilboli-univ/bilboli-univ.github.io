@@ -1,4 +1,5 @@
 // Remplace par tes vraies clés Firebase
+// Ceci n'est pas un secret, Firebase keys are public
 const firebaseConfig = {
   apiKey: "AIzaSyDe3Mpmcd5zNZz7CJ0RHP1RxeM8tA_-aLM",
   authDomain: "findmeonphoto.firebaseapp.com",
