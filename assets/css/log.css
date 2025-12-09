@@ -1,0 +1,107 @@
+/* ----- Reset ----- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* ----- Page ----- */
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+  background: #f6f7fb;
+  padding: 20px;
+}
+
+/* ----- Container (auto-centering on all screens) ----- */
+body > * {
+  width: 100%;
+  max-width: 380px; /* centered on desktop */
+  text-align: center;
+}
+
+/* ----- Title ----- */
+h1 {
+  margin-bottom: 20px;
+  color: #222;
+  font-size: 26px;
+}
+
+/* ----- Inputs ----- */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+
+  transition: border 0.2s;
+}
+
+input:focus {
+  border-color: #3b6df5;
+  outline: none;
+}
+
+/* ----- Buttons ----- */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+
+  background: #3b6df5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #2754db;
+}
+
+/* Button Google alternative */
+hr {
+  width: 60%;
+  margin: 20px auto;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+/* ----- Links ----- */
+p {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+a {
+  color: #3b6df5;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ----- Mobile-friendly adjustments (already good by design) ----- */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 22px;
+  }
+
+  button, input {
+    font-size: 15px;
+  }
+}

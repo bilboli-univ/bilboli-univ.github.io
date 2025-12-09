@@ -75,8 +75,6 @@ p {
   display: block;           
 }
 
-
-
 /* avatar du profil (dans header profil) */
 #profileAvatar {
     width: 80px;
@@ -297,10 +295,19 @@ section h2 {
   cursor: pointer;
 }
 
-/* Bouton Télécharger */
-.lightbox-download-btn {
+/* Conteneur des boutons en bas */
+.lightbox-buttons {
   position: absolute;
   bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  display: flex;
+  gap: 10px;
+}
+
+.lightbox-download-btn,
+.lightbox-report-btn {
   background: var(--bordure);
   color: #fff;
   padding: 0.5rem 1rem;
@@ -308,6 +315,8 @@ section h2 {
   text-decoration: none;
   font-size: 1rem;
   transition: background 0.2s;
+  border: none; /* utile pour le button */
+  cursor: pointer;
 }
 
 .lightbox-download-btn:hover {
@@ -688,14 +697,4 @@ section h2 {
   border-radius: 8px;
   width: 90%;
   max-width: 400px;
-}
-
-.lightbox-report-btn {
-  margin-top: 10px;
-  background: #e63946;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
 }

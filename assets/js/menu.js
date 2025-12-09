@@ -47,8 +47,6 @@ document.querySelectorAll(".dropdown > a").forEach(toggle => {
     return;
   }
 
-  console.log("✅ Header trouvé :", headerEl);
-
   let lastScrollTop = 0;
 
   window.addEventListener("scroll", () => {
