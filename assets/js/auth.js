@@ -8,9 +8,15 @@ function registerStudent() {
     return;
   }
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => alert("Compte créé avec succès !"))
-    .catch(error => alert(error.message));
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(userCredential => {
+        const user = userCredential.user;
+        user.sendEmailVerification();
+        alert("Un email de vérification vous a été envoyé.");
+    })
+    .catch(error => {
+        alert(error.message);
+    });
 }
 
 function loginStudent() {
@@ -18,45 +24,54 @@ function loginStudent() {
   const password = document.getElementById("passwordLogin").value;
 
   auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
+    .then(async () => {
+      const user = auth.currentUser;
+      await user.reload(); // ✅ rafraîchit emailVerified
+
+      if (!user.emailVerified) {
+        alert("Veuillez vérifier votre email avant de vous connecter.");
+        user.sendEmailVerification();
+        alert("Un nouvel email de vérification vous a été renvoyé.");
+        auth.signOut();
+        return;
+      }
+
       // ✅ Vérifie si une page était demandée
       const redirect = localStorage.getItem("redirectAfterLogin");
 
       if (redirect) {
         localStorage.removeItem("redirectAfterLogin");
-        window.location.href = redirect; // ✅ Retour à la page voulue
+        window.location.href = redirect;
       } else {
-        window.location.href = "/profil.html"; // ✅ fallback
+        window.location.href = "/profil.html";
       }
     })
     .catch(error => alert(error.message));
 }
 
-// ✅ Connexion Google
+
 function loginWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
 
   auth.signInWithPopup(provider)
-    .then(result => {
-      const email = result.user.email;
+    .then(async result => {
+      const user = result.user;
+      const email = user.email;
+
       if (!email.endsWith("@etu.umontpellier.fr")) {
         alert("Seules les adresses étudiantes @etu.umontpellier.fr sont autorisées.");
         auth.signOut();
+        return;
       }
-    })
-    .catch(error => alert(error.message));
-}
 
-// ✅ Connexion Microsoft
-function loginWithMicrosoft() {
-  const provider = new firebase.auth.OAuthProvider('microsoft.com');
+      await user.reload();
 
-  auth.signInWithPopup(provider)
-    .then(result => {
-      const email = result.user.email;
-      if (!email.endsWith("@etu.umontpellier.fr")) {
-        alert("Seules les adresses étudiantes @etu.umontpellier.fr sont autorisées.");
+      if (!user.emailVerified) {
+        alert("Veuillez vérifier votre email avant de vous connecter.");
+        user.sendEmailVerification();
+        alert("Un email de vérification vous a été envoyé.");
         auth.signOut();
+        return;
       }
     })
     .catch(error => alert(error.message));
