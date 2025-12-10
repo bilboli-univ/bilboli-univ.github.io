@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BDE sciences-Profile</title>
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 <body>
   <!-- Ici le menu sera injecté -->
@@ -13,30 +13,35 @@
     <div class="nav-overlay" id="navOverlay"></div>
 
 
-  <main class="container profile-page">
-    <section class="profile">
-      <div class="profile-header" style="display:flex;gap:1rem;align-items:center">
-        <img id="profileAvatar" src="assets/img/logo.png" alt="Avatar" style="width:80px;height:80px;border-radius:50%;object-fit:cover">
-        <div>
-          <h2 id="profileName">Nom d'Utilisateur</h2>
-          <div id="profileEmail">user@example.com</div>
+    <main class="container profile-page">
+      <section class="profile">
+        <div class="profile-header" style="display:flex;gap:1rem;align-items:center">
+          <img id="profileAvatar" src="assets/img/logo.png" alt="Avatar" style="width:80px;height:80px;border-radius:50%;object-fit:cover">
+          <div>
+            <h2 id="profileName">Nom d'Utilisateur</h2>
+            <div id="profileEmail">user@example.com</div>
+          </div>
+          <div style="margin-left:auto">
+            <button id="editProfileBtn" class="btn">Éditer le Profil</button>
+            <button onclick="logout()" class="btn">Déconnexion</button>
+            <button onclick="deleteAccount()" class="danger-btn">Supprimer mon compte</button>          
+          </div>
         </div>
-        <div style="margin-left:auto">
-          <button id="editProfileBtn" class="btn">Éditer le Profil</button>
-          <button onclick="logout()" class="btn">Déconnexion</button>
-          <button onclick="deleteAccount()" class="danger-btn">Supprimer mon compte</button>          
+
+        <h3 style="margin-top:1.2rem">Photos de référence</h3>
+
+        <div id="photoGallery" class="photo-gallery"></div>
+
+        <div style="margin-top:1rem;">
+          <button id="addPhotoBtn" class="btn">Ajouter une photo</button>
         </div>
-      </div>
+      </section>
+    </main>
 
-      <h3 style="margin-top:1.2rem">Photos de référence</h3>
+  <a href="depot.html" class="section-card">
+      <h3>Déposer une photo ou une vidéo</h3>
+  </a>
 
-      <div id="photoGallery" class="photo-gallery"></div>
-
-      <div style="margin-top:1rem;">
-        <button id="addPhotoBtn" class="btn">Ajouter une photo</button>
-      </div>
-    </section>
-  </main>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

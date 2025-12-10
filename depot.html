@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dépôt</title>
+</head>
+<body>
+
+<h1>Déposer une photo ou une vidéo</h1>
+
+<div id="student-area" style="text-align:center; margin-top:40px;">
+    <input type="file" id="uploadFile" accept="image/*,video/*" style="display:none;">
+    <button id="uploadBtn" style="font-size:22px; padding:20px 40px;">
+        📤 Déposer un fichier
+    </button>
+    <p id="uploadStatus"></p>
+</div>
+
+<div id="admin-area" style="display:none; margin-top:50px;">
+    <h2>Fichiers envoyés par les étudiants</h2>
+    <div id="adminFiles" class="admin-grid"></div>
+</div>
+
+<!-- Firebase Core -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<!-- Firebase Storage -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<!-- Ton fichier de configuration Firebase -->
+<script src="/assets/js/firebase-config.js"></script>
+
+<!-- Ton script dépôt -->
+<script src="/assets/js/depot.js"></script>
+</body>
+</html>
