@@ -60,8 +60,16 @@
                 lightboxImg.src = full;
                 downloadBtn.href = full;
                 downloadBtn.download = file;
-            });
 
+                // ✅ On stocke toutes les infos utiles
+                    window.currentPhotoReported = {
+                        file: file,
+                        fullPath: full,
+                        thumbPath: thumb,
+                        absoluteUrl: location.origin + full.replace("../..", "")
+                    };
+            });
+            
             container.appendChild(item);
         });
 
