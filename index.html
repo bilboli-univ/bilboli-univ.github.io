@@ -135,6 +135,26 @@ Après inscription, chaque utilisateur associe une ou plusieurs photos de réfé
         document.body.appendChild(script);
       });
     </script> 
+
+    <!-- Vérification email Firebase -->
+    <script>
+    // Lire les paramètres de l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get("mode");
+    const oobCode = urlParams.get("oobCode");
+
+    // Si c'est un lien de vérification d'email
+    if (mode === "verifyEmail" && oobCode) {
+        firebase.auth().applyActionCode(oobCode)
+        .then(() => {
+            alert("✅ Votre email a été vérifié !");
+            window.location.href = "/login.html"; // Redirection après vérification
+        })
+        .catch(err => {
+            alert("❌ Erreur lors de la vérification : " + err.message);
+        });
+    }
+    </script>
 </body>
 </html>
 

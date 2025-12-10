@@ -3,15 +3,17 @@ function registerStudent() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  if (!email.endsWith("@etu.umontpellier.fr")) {
-    alert("Vous devez utiliser votre adresse étudiante @etu.umontpellier.fr");
-    return;
-  }
+  // if (!email.endsWith("@etu.umontpellier.fr")) {
+  //    alert("Vous devez utiliser votre adresse étudiante @etu.umontpellier.fr");
+  //    return;
+  // }
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(userCredential => {
         const user = userCredential.user;
-        user.sendEmailVerification();
+        user.sendEmailVerification()
+          .then(() => alert("Email envoyé !"))
+          .catch(err => alert("Erreur envoi email : " + err.message));
         alert("Un email de vérification vous a été envoyé.");
     })
     .catch(error => {
@@ -26,7 +28,7 @@ function loginStudent() {
   auth.signInWithEmailAndPassword(email, password)
     .then(async () => {
       const user = auth.currentUser;
-      await user.reload(); // ✅ rafraîchit emailVerified
+      await user.reload(); // rafraîchit emailVerified
 
       if (!user.emailVerified) {
         alert("Veuillez vérifier votre email avant de vous connecter.");
@@ -36,7 +38,6 @@ function loginStudent() {
         return;
       }
 
-      // ✅ Vérifie si une page était demandée
       const redirect = localStorage.getItem("redirectAfterLogin");
 
       if (redirect) {
