@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/styles.css">
     <title>Dépôt</title>
 </head>
 <body>
@@ -19,8 +20,11 @@
 
 <div id="admin-area" style="display:none; margin-top:50px;">
     <h2>Fichiers envoyés par les étudiants</h2>
+    <button id="downloadAllBtn">Télécharger tout</button>
     <div id="adminFiles" class="admin-grid"></div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <!-- Firebase Core -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
