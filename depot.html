@@ -11,10 +11,13 @@
 <h1>Déposer une photo ou une vidéo</h1>
 
 <div id="student-area" style="text-align:center; margin-top:40px;">
-    <input type="file" id="uploadFile" accept="image/*,video/*" style="display:none;">
+    <input type="file" id="uploadFile" accept="image/*,video/*" style="display:none;" multiple>
     <button id="uploadBtn" style="font-size:22px; padding:20px 40px;">
         📤 Déposer un fichier
     </button>
+    <div id="progressContainer" style="display:none; width:100%; background:#ddd; border-radius:5px; margin-top:10px;">
+        <div id="progressBar" style="height:10px; width:0%; background:#4caf50; border-radius:5px;"></div>
+    </div>
     <p id="uploadStatus"></p>
 </div>
 

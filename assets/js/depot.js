@@ -5,10 +5,9 @@ const uploadStatus = document.getElementById("uploadStatus");
 uploadBtn.addEventListener("click", () => uploadInput.click());
 uploadInput.addEventListener("change", uploadFile);
 
-// ✅ UPLOAD AVEC contentType POUR OUVRIR LES VIDÉOS
 function uploadFile() {
-    const file = uploadInput.files[0];
-    if (!file) return;
+    const files = uploadInput.files;
+    if (!files || files.length === 0) return;
 
     const user = auth.currentUser;
     if (!user) {
@@ -16,17 +15,47 @@ function uploadFile() {
         return;
     }
 
-    const storageRef = firebase.storage().ref(`uploads/${user.uid}/${file.name}`);
+    uploadStatus.textContent = "";
+    document.getElementById("progressContainer").style.display = "block";
 
-    const metadata = { contentType: file.type };
+    let uploadedCount = 0;
+    let totalSize = 0;
+    let uploadedBytes = 0;
 
-    storageRef.put(file, metadata)
-        .then(() => {
-            uploadStatus.textContent = "✅ Fichier envoyé avec succès !";
-        })
-        .catch(err => {
-            uploadStatus.textContent = "❌ Erreur : " + err.message;
-        });
+    // Calculer la taille totale
+    for (let f of files) totalSize += f.size;
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const storageRef = firebase.storage().ref(`uploads/${user.uid}/${file.name}`);
+        const metadata = { contentType: file.type };
+
+        const uploadTask = storageRef.put(file, metadata);
+
+        uploadTask.on("state_changed",
+            snapshot => {
+                // Progression globale
+                uploadedBytes += snapshot.bytesTransferred - (snapshot.previousBytesTransferred || 0);
+                const progress = (uploadedBytes / totalSize) * 100;
+
+                document.getElementById("progressBar").style.width = progress + "%";
+            },
+            error => {
+                uploadStatus.textContent = "❌ Erreur : " + error.message;
+            },
+            () => {
+                uploadedCount++;
+
+                if (uploadedCount === files.length) {
+                    uploadStatus.textContent = `✅ ${uploadedCount} fichier(s) envoyé(s) avec succès !`;
+                    setTimeout(() => {
+                        document.getElementById("progressContainer").style.display = "none";
+                        document.getElementById("progressBar").style.width = "0%";
+                    }, 1500);
+                }
+            }
+        );
+    }
 }
 
 // ✅ SI ADMIN → CHARGER LES FICHIERS
