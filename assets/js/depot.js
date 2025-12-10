@@ -55,6 +55,7 @@ function loadAdminFiles() {
                 div.className = "admin-file";
 
                 div.innerHTML = `
+                    <img src="${url}" class="preview-img" alt="preview">
                     <p>${fileRef.name}</p>
                     <a href="${url}" target="_blank">Voir</a>
                     <button onclick="deleteFile('${fileRef.fullPath}')">Supprimer</button>
