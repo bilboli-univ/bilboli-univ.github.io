@@ -98,23 +98,42 @@ function logout() {
   auth.signOut();
 }
 
-function deleteAccount() {
+async function deleteAccount() {
   const user = auth.currentUser;
+  if (!user) return;
 
-  if (confirm("Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.")) {
-    user.delete()
-      .then(() => {
-        alert("Votre compte a été supprimé.");
-        window.location.href = "/login.html";
-      })
-      .catch(error => {
-        if (error.code === "auth/requires-recent-login") {
-          alert("Veuillez vous reconnecter pour confirmer la suppression de votre compte.");
-          window.location.href = "/login.html";
-        } else {
-          alert("Erreur : " + error.message);
-        }
-      });
+  if (!confirm("Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.")) {
+    return;
+  }
+
+  try {
+    const db = firebase.firestore();
+    const cleanEmail = user.email.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+    // ✅ 1. Supprimer tous les fichiers dans Storage
+    const folderRef = firebase.storage().ref(`uploads/${cleanEmail}`);
+    const list = await folderRef.listAll();
+
+    for (const fileRef of list.items) {
+      await fileRef.delete();
+    }
+
+    // ✅ 2. Supprimer le document Firestore
+    await db.collection("users").doc(user.uid).delete();
+
+    // ✅ 3. Supprimer le compte Firebase Auth
+    await user.delete();
+
+    alert("Votre compte et toutes vos données ont été supprimés.");
+    window.location.href = "/login.html";
+
+  } catch (error) {
+    if (error.code === "auth/requires-recent-login") {
+      alert("Veuillez vous reconnecter pour confirmer la suppression de votre compte.");
+      window.location.href = "/login.html";
+    } else {
+      alert("Erreur : " + error.message);
+    }
   }
 }
 
