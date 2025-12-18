@@ -3,10 +3,12 @@ function registerStudent() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  // if (!email.endsWith("@etu.umontpellier.fr")) {
-  //    alert("Vous devez utiliser votre adresse étudiante @etu.umontpellier.fr");
-  //    return;
-  // }
+
+  if (!email.endsWith("@etu.umontpellier.fr")) {
+        alert("Seules les adresses étudiantes @etu.umontpellier.fr sont autorisées.");
+        auth.signOut();
+        return;
+    }
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(userCredential => {
