@@ -70,18 +70,6 @@ function uploadFile() {
     }
 }
 
-// ✅ SI ADMIN → CHARGER LES FICHIERS
-auth.onAuthStateChanged(async user => {
-    if (!user) return;
-
-    const token = await user.getIdTokenResult();
-
-    if (token.claims.admin) {
-        document.getElementById("admin-area").style.display = "block";
-        loadAdminFiles();
-        setupDownloadAllButton();
-    }
-});
 
 // ✅ AFFICHAGE ADMIN : PREVIEW + LECTURE VIDÉO + SUPPRESSION
 function loadAdminFiles() {
@@ -178,3 +166,71 @@ async function downloadAllUploads() {
         saveAs(content, "uploads.zip");
     });
 }
+
+// ✅ AFFICHAGE ÉTUDIANT : VOIR SES PROPRES FICHIERS
+function loadStudentFiles() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const folderName = user.email.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const userFolder = firebase.storage().ref(`uploads/${folderName}`);
+
+    userFolder.listAll().then(async res => {
+        const container = document.getElementById("studentFiles");
+        container.innerHTML = "";
+
+        for (const fileRef of res.items) {
+            const url = await fileRef.getDownloadURL();
+            const fileName = fileRef.name.toLowerCase();
+
+            const div = document.createElement("div");
+            div.className = "student-file";
+
+            let preview = "";
+
+            if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
+                preview = `
+                    <a href="${url}" target="_blank">
+                        <img src="${url}" class="preview-img" alt="preview">
+                    </a>
+                `;
+            } 
+            else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
+                preview = `
+                    <a href="${url}" target="_blank">
+                        <video class="preview-video" controls>
+                            <source src="${url}" type="video/mp4">
+                        </video>
+                    </a>
+                `;
+            } 
+            else {
+                preview = `<p>(Aperçu non disponible)</p>`;
+            }
+
+            div.innerHTML = `
+                ${preview}
+                <p>${fileRef.name}</p>
+                <a href="${url}" target="_blank">Voir</a>
+            `;
+
+            container.appendChild(div);
+        }
+    });
+}
+
+auth.onAuthStateChanged(async user => {
+    if (!user) return;
+
+    const token = await user.getIdTokenResult();
+
+    if (token.claims.admin) {
+        document.getElementById("admin-area").style.display = "block";
+        loadAdminFiles();
+        setupDownloadAllButton();
+    } else {
+        document.getElementById("student-area").style.display = "block";
+        loadStudentFiles();
+    }
+});
+
