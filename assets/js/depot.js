@@ -22,22 +22,33 @@ function uploadFile() {
     let totalSize = 0;
     let uploadedBytes = 0;
 
-    // Calculer la taille totale
+    // Tableau pour suivre la progression individuelle
+    const fileProgress = new Array(files.length).fill(0);
+
+    // Taille totale
     for (let f of files) totalSize += f.size;
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const storageRef = firebase.storage().ref(`uploads/${user.uid}/${file.name}`);
+        const folderName = user.email.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const storageRef = firebase.storage().ref(`uploads/${folderName}/${file.name}`);
         const metadata = { contentType: file.type };
 
         const uploadTask = storageRef.put(file, metadata);
 
         uploadTask.on("state_changed",
             snapshot => {
-                // Progression globale
-                uploadedBytes += snapshot.bytesTransferred - (snapshot.previousBytesTransferred || 0);
-                const progress = (uploadedBytes / totalSize) * 100;
+                // Progression du fichier actuel
+                const current = snapshot.bytesTransferred;
 
+                // Différence depuis la dernière update
+                const diff = current - fileProgress[i];
+                fileProgress[i] = current;
+
+                // Mise à jour globale
+                uploadedBytes += diff;
+
+                const progress = (uploadedBytes / totalSize) * 100;
                 document.getElementById("progressBar").style.width = progress + "%";
             },
             error => {
@@ -48,6 +59,7 @@ function uploadFile() {
 
                 if (uploadedCount === files.length) {
                     uploadStatus.textContent = `✅ ${uploadedCount} fichier(s) envoyé(s) avec succès !`;
+
                     setTimeout(() => {
                         document.getElementById("progressContainer").style.display = "none";
                         document.getElementById("progressBar").style.width = "0%";
