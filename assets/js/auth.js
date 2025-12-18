@@ -3,25 +3,38 @@ function registerStudent() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-
   if (!email.endsWith("@etu.umontpellier.fr")) {
-        alert("Seules les adresses étudiantes @etu.umontpellier.fr sont autorisées.");
-        auth.signOut();
-        return;
-    }
+    alert("Seules les adresses étudiantes @etu.umontpellier.fr sont autorisées.");
+    auth.signOut();
+    return;
+  }
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-        const user = userCredential.user;
-        user.sendEmailVerification()
-          .then(() => alert("Email envoyé !"))
-          .catch(err => alert("Erreur envoi email : " + err.message));
-        alert("Un email de vérification vous a été envoyé.");
+    .then(async userCredential => {
+      const user = userCredential.user;
+
+      // ✅ Nettoyer l'email pour créer le nom du dossier
+      const cleanEmail = email.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      // ✅ Enregistrer dans Firestore
+      const db = firebase.firestore();
+      await db.collection("users").doc(user.uid).set({
+        email: email,
+        cleanEmail: cleanEmail
+      });
+
+      // ✅ Envoyer email de vérification
+      user.sendEmailVerification()
+        .then(() => alert("Email envoyé !"))
+        .catch(err => alert("Erreur envoi email : " + err.message));
+
+      alert("Un email de vérification vous a été envoyé.");
     })
     .catch(error => {
-        alert(error.message);
+      alert(error.message);
     });
 }
+
 
 function loginStudent() {
   const email = document.getElementById("emailLogin").value;
