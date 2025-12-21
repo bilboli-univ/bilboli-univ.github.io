@@ -172,14 +172,24 @@ async function downloadAllUploads() {
 }
 
 // ✅ AFFICHAGE ÉTUDIANT : VOIR SES PROPRES FICHIERS
-function loadStudentFiles() {
+async function loadStudentFiles() {
     const user = auth.currentUser;
     if (!user) return;
 
-    const folderName = user.email.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const userFolder = firebase.storage().ref(`uploads/${folderName}`);
+    // ✅ Récupérer cleanEmail depuis Firestore (comme pour l’upload)
+    const db = firebase.firestore();
+    const userDoc = await db.collection("users").doc(user.uid).get();
 
-    userFolder.listAll().then(async res => {
+    if (!userDoc.exists) {
+        console.error("Profil Firestore manquant");
+        return;
+    }
+
+    const folderName = userDoc.data().cleanEmail;
+    const userFolder = firebase.storage().ref(`uploads/${folderName}/`);
+
+    try {
+        const res = await userFolder.listAll();
         const container = document.getElementById("studentFiles");
         container.innerHTML = "";
 
@@ -198,8 +208,7 @@ function loadStudentFiles() {
                         <img src="${url}" class="preview-img" alt="preview">
                     </a>
                 `;
-            } 
-            else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
+            } else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
                 preview = `
                     <a href="${url}" target="_blank">
                         <video class="preview-video" controls>
@@ -207,8 +216,7 @@ function loadStudentFiles() {
                         </video>
                     </a>
                 `;
-            } 
-            else {
+            } else {
                 preview = `<p>(Aperçu non disponible)</p>`;
             }
 
@@ -220,7 +228,16 @@ function loadStudentFiles() {
 
             container.appendChild(div);
         }
-    });
+
+    } catch (error) {
+        // ✅ Dossier inexistant = normal pour un nouvel utilisateur
+        if (error.code === "storage/unauthorized" || error.code === "storage/object-not-found") {
+            console.warn("Dossier inexistant, aucun fichier pour cet utilisateur.");
+            return;
+        }
+
+        console.error("Erreur inattendue :", error);
+    }
 }
 
 auth.onAuthStateChanged(async user => {
