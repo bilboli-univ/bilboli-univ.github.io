@@ -5,7 +5,7 @@ const uploadStatus = document.getElementById("uploadStatus");
 uploadBtn.addEventListener("click", () => uploadInput.click());
 uploadInput.addEventListener("change", uploadFile);
 
-function uploadFile() {
+async function uploadFile() {
     const files = uploadInput.files;
     if (!files || files.length === 0) return;
 
@@ -15,6 +15,17 @@ function uploadFile() {
         return;
     }
 
+    // ✅ Récupérer cleanEmail depuis Firestore (OBLIGATOIRE)
+    const db = firebase.firestore();
+    const userDoc = await db.collection("users").doc(user.uid).get();
+
+    if (!userDoc.exists) {
+        alert("Erreur : votre profil Firestore est manquant.");
+        return;
+    }
+
+    const folderName = userDoc.data().cleanEmail; // ✅ LA BONNE VALEUR
+
     uploadStatus.textContent = "";
     document.getElementById("progressContainer").style.display = "block";
 
@@ -22,15 +33,12 @@ function uploadFile() {
     let totalSize = 0;
     let uploadedBytes = 0;
 
-    // Tableau pour suivre la progression individuelle
     const fileProgress = new Array(files.length).fill(0);
 
-    // Taille totale
     for (let f of files) totalSize += f.size;
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const folderName = user.email.replace(/[^a-zA-Z0-9._-]/g, "_");
         const storageRef = firebase.storage().ref(`uploads/${folderName}/${file.name}`);
         const metadata = { contentType: file.type };
 
@@ -38,14 +46,10 @@ function uploadFile() {
 
         uploadTask.on("state_changed",
             snapshot => {
-                // Progression du fichier actuel
                 const current = snapshot.bytesTransferred;
-
-                // Différence depuis la dernière update
                 const diff = current - fileProgress[i];
                 fileProgress[i] = current;
 
-                // Mise à jour globale
                 uploadedBytes += diff;
 
                 const progress = (uploadedBytes / totalSize) * 100;
@@ -221,7 +225,7 @@ function loadStudentFiles() {
 
 auth.onAuthStateChanged(async user => {
     if (!user) return;
-
+    
     const token = await user.getIdTokenResult();
 
     if (token.claims.admin) {
