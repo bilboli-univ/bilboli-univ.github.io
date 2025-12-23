@@ -6,12 +6,6 @@ uploadBtn.addEventListener("click", () => uploadInput.click());
 uploadInput.addEventListener("change", uploadFile);
 
 async function uploadFile() {
-    // avant d'appeler storage.ref(...).put(file)
-    console.log("auth.currentUser.uid:", firebase.auth().currentUser && firebase.auth().currentUser.uid);
-    console.log("folderName (from Firestore):", folderName);
-    const fullPath = storage.ref(`uploads/${folderName}/${file.name}`).fullPath;
-    console.log("storageRef fullPath:", fullPath);
-
     const files = uploadInput.files;
     if (!files || files.length === 0) return;
 
@@ -47,7 +41,12 @@ async function uploadFile() {
         const file = files[i];
         const storageRef = firebase.storage().ref(`uploads/${folderName}/${file.name}`);
         const metadata = { contentType: file.type };
-
+        
+        // avant d'appeler storage.ref(...).put(file)
+        console.log("auth.currentUser.uid:", firebase.auth().currentUser && firebase.auth().currentUser.uid);
+        console.log("folderName (from Firestore):", folderName);
+        const fullPath = storage.ref(`uploads/${folderName}/${file.name}`).fullPath;
+        console.log("storageRef fullPath:", fullPath);
         const uploadTask = storageRef.put(file, metadata);
 
         uploadTask.on("state_changed",
