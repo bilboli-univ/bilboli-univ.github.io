@@ -208,74 +208,100 @@ async function downloadAllUploads() {
     });
 }
 
-// ✅ AFFICHAGE ÉTUDIANT : VOIR SES PROPRES FICHIERS
+// Assure-toi que firebase/app, firebase/auth et firebase/storage sont initialisés
 async function loadStudentFiles() {
-    const user = auth.currentUser;
-    if (!user) return;
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    console.log("Aucun utilisateur connecté");
+    return;
+  }
 
-    // ✅ Récupérer cleanEmail depuis Firestore (comme pour l’upload)
-    const db = firebase.firestore();
-    const userDoc = await db.collection("users").doc(user.uid).get();
+  // Récupère les claims et force refresh si nécessaire
+  let idTokenResult;
+  try {
+    idTokenResult = await user.getIdTokenResult(true); // true force refresh
+  } catch (err) {
+    console.error("Impossible d'obtenir le token:", err);
+    return;
+  }
 
-    if (!userDoc.exists) {
-        console.error("Profil Firestore manquant");
-        return;
+  // Utilise la claim cleanEmail si présente, sinon fallback sur email nettoyé
+  const claimCleanEmail = idTokenResult.claims && idTokenResult.claims.cleanEmail;
+  const folderName = claimCleanEmail
+    ? claimCleanEmail
+    : (user.email || "").replace(/[^a-zA-Z0-9._-]/g, "_");
+
+  const folderPath = `uploads/${folderName}`;
+  const userFolderRef = firebase.storage().ref(folderPath);
+
+  try {
+    const res = await userFolderRef.listAll();
+    const container = document.getElementById("studentFiles");
+    if (!container) {
+      console.warn("Element #studentFiles introuvable");
+      return;
     }
+    container.innerHTML = "";
 
-    const folderName = userDoc.data().cleanEmail;
-    const userFolder = firebase.storage().ref(`uploads/${folderName}/`);
+    for (const fileRef of res.items) {
+      try {
+        const url = await fileRef.getDownloadURL();
+        const fileName = fileRef.name.toLowerCase();
 
-    try {
-        const res = await userFolder.listAll();
-        const container = document.getElementById("studentFiles");
-        container.innerHTML = "";
+        const div = document.createElement("div");
+        div.className = "student-file";
 
-        for (const fileRef of res.items) {
-            const url = await fileRef.getDownloadURL();
-            const fileName = fileRef.name.toLowerCase();
+        let previewHtml = "";
 
-            const div = document.createElement("div");
-            div.className = "student-file";
-
-            let preview = "";
-
-            if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
-                preview = `
-                    <a href="${url}" target="_blank">
-                        <img src="${url}" class="preview-img" alt="preview">
-                    </a>
-                `;
-            } else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
-                preview = `
-                    <a href="${url}" target="_blank">
-                        <video class="preview-video" controls>
-                            <source src="${url}" type="video/mp4">
-                        </video>
-                    </a>
-                `;
-            } else {
-                preview = `<p>(Aperçu non disponible)</p>`;
-            }
-
-            div.innerHTML = `
-                ${preview}
-                <p>${fileRef.name}</p>
-                <a href="${url}" target="_blank">Voir</a>
-            `;
-
-            container.appendChild(div);
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".gif")) {
+          previewHtml = `
+            <a href="${url}" target="_blank" rel="noopener">
+              <img src="${url}" class="preview-img" alt="preview" style="max-width:200px;margin:6px;">
+            </a>
+          `;
+        } else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
+          previewHtml = `
+            <a href="${url}" target="_blank" rel="noopener">
+              <video class="preview-video" controls style="max-width:300px;margin:6px;">
+                <source src="${url}" type="video/mp4">
+              </video>
+            </a>
+          `;
+        } else {
+          previewHtml = `<p>(Aperçu non disponible)</p>`;
         }
 
-    } catch (error) {
-        // ✅ Dossier inexistant = normal pour un nouvel utilisateur
-        if (error.code === "storage/unauthorized" || error.code === "storage/object-not-found") {
-            console.warn("Dossier inexistant, aucun fichier pour cet utilisateur.");
-            return;
-        }
-
-        console.error("Erreur inattendue :", error);
+        div.innerHTML = `
+          ${previewHtml}
+          <p>${fileRef.name}</p>
+          <a href="${url}" target="_blank" rel="noopener">Voir</a>
+        `;
+        container.appendChild(div);
+      } catch (err) {
+        console.error("Erreur getDownloadURL pour", fileRef.fullPath, err);
+      }
     }
+
+    // Si aucun fichier
+    if (res.items.length === 0) {
+      container.innerHTML = "<p>Aucun fichier trouvé dans votre dossier.</p>";
+    }
+  } catch (err) {
+    console.error("Erreur listAll pour", folderPath, err);
+    // Messages d'aide selon l'erreur
+    if (err.code === 'storage/unauthorized' || err.code === 'storage/forbidden') {
+      console.warn("Accès refusé. Vérifie les règles Storage et la présence de la claim cleanEmail.");
+    }
+  }
 }
+
+// Appel après authentification
+firebase.auth().onAuthStateChanged(async user => {
+  if (!user) return;
+  // Affiche la zone étudiant et charge les fichiers
+  document.getElementById("student-area").style.display = "block";
+  await loadStudentFiles();
+});
 
 auth.onAuthStateChanged(async user => {
     if (!user) return;
