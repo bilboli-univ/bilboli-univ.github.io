@@ -250,8 +250,8 @@ auth.onAuthStateChanged(async user => {
         loadAdminFiles();
         setupDownloadAllButton();
     } else {
-        document.getElementById("student-area").style.display = "block";
-        loadStudentFiles();
+        //document.getElementById("student-area").style.display = "block";
+        //loadStudentFiles();
     }
 });
 
