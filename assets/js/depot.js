@@ -183,55 +183,104 @@ async function uploadFile() {
   }
 }
 
-// ---------- ADMIN ----------
+// Remplace loadAdminFiles et deleteFile par ceci
 async function loadAdminFiles() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+  // forcer token pour être sûr des claims
+  await user.getIdToken(true);
+  const claims = (await user.getIdTokenResult()).claims || {};
+  const isAdmin = !!claims.admin;
+
   const storageRef = firebase.storage().ref("uploads");
   try {
-    const res = await storageRef.listAll();
+    const root = await storageRef.listAll();
     const container = document.getElementById("adminFiles");
     if (!container) return;
     container.innerHTML = "";
 
-    for (const folder of res.prefixes) {
-      const files = await folder.listAll();
+    // Pour chaque dossier (prefix) sous uploads
+    for (const folderRef of root.prefixes) {
+      // créer un bloc dossier
+      const folderDiv = document.createElement("div");
+      folderDiv.className = "admin-folder";
+      const title = document.createElement("h3");
+      title.textContent = folderRef.name;
+      folderDiv.appendChild(title);
+
+      // lister les fichiers du dossier
+      const files = await folderRef.listAll();
       for (const fileRef of files.items) {
         try {
           const url = await fileRef.getDownloadURL();
-          const fileName = fileRef.name.toLowerCase();
+          const fileName = fileRef.name;
+          const item = document.createElement("div");
+          item.className = "admin-file";
 
-          const div = document.createElement("div");
-          div.className = "admin-file";
-
+          // preview (image/video) minimal
           let preview = "";
-          if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
-            preview = `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" class="preview-img" alt="preview"></a>`;
-          } else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
-            preview = `<a href="${url}" target="_blank" rel="noopener"><video class="preview-video" controls><source src="${url}" type="video/mp4"></video></a>`;
+          const lower = fileName.toLowerCase();
+          if (lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png") || lower.endsWith(".gif")) {
+            preview = `<img src="${url}" class="admin-preview" alt="${fileName}">`;
+          } else if (lower.endsWith(".mp4") || lower.endsWith(".mov") || lower.endsWith(".webm")) {
+            preview = `<video class="admin-preview" controls><source src="${url}" type="video/mp4"></video>`;
           } else {
-            preview = `<p>(Aperçu non disponible)</p>`;
+            preview = `<span class="admin-file-icon">📄</span>`;
           }
 
-          div.innerHTML = `${preview}<p>${fileRef.name}</p><a href="${url}" target="_blank" rel="noopener">Voir</a><button onclick="deleteFile('${fileRef.fullPath}')">Supprimer</button>`;
-          container.appendChild(div);
+          // bouton supprimer visible seulement si admin
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Supprimer";
+          deleteBtn.className = "admin-delete-btn";
+          deleteBtn.style.display = isAdmin ? "inline-block" : "none";
+          deleteBtn.addEventListener("click", () => deleteFile(fileRef.fullPath));
+
+          item.innerHTML = `
+            <div class="admin-file-left">${preview}</div>
+            <div class="admin-file-right">
+              <p class="admin-filename">${fileName}</p>
+              <a href="${url}" target="_blank" rel="noopener">Voir</a>
+            </div>
+          `;
+          item.appendChild(deleteBtn);
+          folderDiv.appendChild(item);
         } catch (e) {
-          console.warn('Erreur lecture fichier admin', fileRef.fullPath, e);
+          console.warn("Erreur lecture fichier admin", fileRef.fullPath, e);
         }
       }
+
+      container.appendChild(folderDiv);
     }
   } catch (e) {
-    console.error('Erreur listAll admin:', e);
+    console.error("Erreur listAll admin:", e);
   }
 }
 
-function deleteFile(path) {
-  if (!confirm("Supprimer ce fichier ?")) return;
-  const fileRef = firebase.storage().ref(path);
-  fileRef.delete()
-    .then(() => {
-      alert("✅ Fichier supprimé");
-      loadAdminFiles();
-    })
-    .catch(err => alert("❌ Erreur : " + err.message));
+async function deleteFile(path) {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert("Vous devez être connecté pour supprimer un fichier.");
+    return;
+  }
+  // vérifier claim admin côté client
+  await user.getIdToken(true);
+  const claims = (await user.getIdTokenResult()).claims || {};
+  if (!claims.admin) {
+    alert("Accès refusé : vous n'êtes pas administrateur.");
+    return;
+  }
+
+  if (!confirm("Supprimer ce fichier définitivement ?")) return;
+
+  try {
+    await firebase.storage().ref(path).delete();
+    alert("✅ Fichier supprimé");
+    // recharger la liste admin
+    await loadAdminFiles();
+  } catch (err) {
+    console.error("Erreur suppression:", err);
+    alert("❌ Erreur lors de la suppression : " + (err.message || err));
+  }
 }
 
 function setupDownloadAllButton() {
