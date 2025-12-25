@@ -1,5 +1,7 @@
-// depot.js (version corrigée - compat v8 CDN)
-// Prérequis : inclure firebase-app.js, firebase-auth.js, firebase-storage.js, firebase-firestore.js, firebase-functions.js
+// depot.js (version complète demandée)
+// Compat v8 (CDN). Ne modifie pas loadAdminFiles visuellement — j'ai gardé ta version intacte.
+// Prérequis : firebase-app.js, firebase-auth.js, firebase-storage.js, firebase-firestore.js, firebase-functions.js
+// Assure-toi d'avoir inclus ton CSS existant (celui que tu préfères) ; ce script utilise les mêmes classes que ta version admin.
 
 // ---------- éléments DOM ----------
 const uploadBtn = document.getElementById("uploadBtn");
@@ -7,9 +9,12 @@ const uploadInput = document.getElementById("uploadFile");
 const uploadStatus = document.getElementById("uploadStatus");
 const progressContainer = document.getElementById("progressContainer");
 const progressBar = document.getElementById("progressBar");
+const adminArea = document.getElementById("admin-area");
+const studentArea = document.getElementById("student-area");
+const downloadAllBtn = document.getElementById("downloadAllBtn");
 
-// Sécurité : vérifier existence des éléments
-if (uploadBtn) uploadBtn.addEventListener("click", () => uploadInput && uploadInput.click());
+// Sécurité : attacher les écouteurs si les éléments existent
+if (uploadBtn && uploadInput) uploadBtn.addEventListener("click", () => uploadInput.click());
 if (uploadInput) uploadInput.addEventListener("change", uploadFile);
 
 // ---------- utilitaires pour claims / callable ----------
@@ -78,14 +83,22 @@ async function ensureClaimThenLoad() {
   }
 
   // Charger l'UI selon rôle
-  if (idr.claims && idr.claims.admin) {
-    const adminArea = document.getElementById("admin-area");
+  const claims = idr.claims || {};
+  const isAdmin = !!claims.admin;
+
+  // afficher / masquer zones
+  if (isAdmin) {
     if (adminArea) adminArea.style.display = "block";
+    if (studentArea) studentArea.style.display = "none";
+    // activer bouton download all si présent
+    if (downloadAllBtn) downloadAllBtn.style.display = "inline-block";
+    // charger admin view
     await loadAdminFiles();
     setupDownloadAllButton();
   } else {
-    const studentArea = document.getElementById("student-area");
     if (studentArea) studentArea.style.display = "block";
+    if (adminArea) adminArea.style.display = "none";
+    if (downloadAllBtn) downloadAllBtn.style.display = "none";
     await loadStudentFiles();
   }
   return true;
@@ -183,133 +196,121 @@ async function uploadFile() {
   }
 }
 
-// Remplace loadAdminFiles et deleteFile par ceci
-async function loadAdminFiles() {
-  const user = firebase.auth().currentUser;
-  if (!user) return;
-  // forcer token pour être sûr des claims
-  await user.getIdToken(true);
-  const claims = (await user.getIdTokenResult()).claims || {};
-  const isAdmin = !!claims.admin;
+// ---------- ADMIN (TA VERSION ORIGINALE CONSERVÉE) ----------
+function loadAdminFiles() {
+    const storageRef = firebase.storage().ref("uploads");
 
-  const storageRef = firebase.storage().ref("uploads");
-  try {
-    const root = await storageRef.listAll();
-    const container = document.getElementById("adminFiles");
-    if (!container) return;
-    container.innerHTML = "";
+    storageRef.listAll().then(async res => {
+        const container = document.getElementById("adminFiles");
+        container.innerHTML = "";
 
-    // Pour chaque dossier (prefix) sous uploads
-    for (const folderRef of root.prefixes) {
-      // créer un bloc dossier
-      const folderDiv = document.createElement("div");
-      folderDiv.className = "admin-folder";
-      const title = document.createElement("h3");
-      title.textContent = folderRef.name;
-      folderDiv.appendChild(title);
+        for (const folder of res.prefixes) {
+            const files = await folder.listAll();
 
-      // lister les fichiers du dossier
-      const files = await folderRef.listAll();
-      for (const fileRef of files.items) {
-        try {
-          const url = await fileRef.getDownloadURL();
-          const fileName = fileRef.name;
-          const item = document.createElement("div");
-          item.className = "admin-file";
+            files.items.forEach(async fileRef => {
+                const url = await fileRef.getDownloadURL();
+                const fileName = fileRef.name.toLowerCase();
 
-          // preview (image/video) minimal
-          let preview = "";
-          const lower = fileName.toLowerCase();
-          if (lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png") || lower.endsWith(".gif")) {
-            preview = `<img src="${url}" class="admin-preview" alt="${fileName}">`;
-          } else if (lower.endsWith(".mp4") || lower.endsWith(".mov") || lower.endsWith(".webm")) {
-            preview = `<video class="admin-preview" controls><source src="${url}" type="video/mp4"></video>`;
-          } else {
-            preview = `<span class="admin-file-icon">📄</span>`;
-          }
+                const div = document.createElement("div");
+                div.className = "admin-file";
 
-          // bouton supprimer visible seulement si admin
-          const deleteBtn = document.createElement("button");
-          deleteBtn.textContent = "Supprimer";
-          deleteBtn.className = "admin-delete-btn";
-          deleteBtn.style.display = isAdmin ? "inline-block" : "none";
-          deleteBtn.addEventListener("click", () => deleteFile(fileRef.fullPath));
+                let preview = "";
 
-          item.innerHTML = `
-            <div class="admin-file-left">${preview}</div>
-            <div class="admin-file-right">
-              <p class="admin-filename">${fileName}</p>
-              <a href="${url}" target="_blank" rel="noopener">Voir</a>
-            </div>
-          `;
-          item.appendChild(deleteBtn);
-          folderDiv.appendChild(item);
-        } catch (e) {
-          console.warn("Erreur lecture fichier admin", fileRef.fullPath, e);
+                if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
+                    preview = `
+                        <a href="${url}" target="_blank">
+                            <img src="${url}" class="preview-img" alt="preview">
+                        </a>
+                    `;
+                } 
+                else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
+                    preview = `
+                        <a href="${url}" target="_blank">
+                            <video class="preview-video" controls>
+                                <source src="${url}" type="video/mp4">
+                            </video>
+                        </a>
+                    `;
+                } 
+                else {
+                    preview = `<p>(Aperçu non disponible)</p>`;
+                }
+
+                div.innerHTML = `
+                    ${preview}
+                    <p>${fileRef.name}</p>
+                    <a href="${url}" target="_blank">Voir</a>
+                    <button onclick="deleteFile('${fileRef.fullPath}')">Supprimer</button>
+                `;
+
+                container.appendChild(div);
+            });
         }
-      }
-
-      container.appendChild(folderDiv);
-    }
-  } catch (e) {
-    console.error("Erreur listAll admin:", e);
-  }
+    });
 }
 
+// ---------- SUPPRESSION (vérifie admin côté client avant suppression) ----------
 async function deleteFile(path) {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    alert("Vous devez être connecté pour supprimer un fichier.");
-    return;
-  }
-  // vérifier claim admin côté client
-  await user.getIdToken(true);
-  const claims = (await user.getIdTokenResult()).claims || {};
-  if (!claims.admin) {
-    alert("Accès refusé : vous n'êtes pas administrateur.");
-    return;
-  }
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      alert("Vous devez être connecté pour supprimer un fichier.");
+      return;
+    }
 
-  if (!confirm("Supprimer ce fichier définitivement ?")) return;
+    // Forcer refresh pour s'assurer des claims
+    await user.getIdToken(true);
+    const claims = (await user.getIdTokenResult()).claims || {};
+    if (!claims.admin) {
+      alert("Accès refusé : vous n'êtes pas administrateur.");
+      return;
+    }
 
-  try {
-    await firebase.storage().ref(path).delete();
-    alert("✅ Fichier supprimé");
-    // recharger la liste admin
-    await loadAdminFiles();
-  } catch (err) {
-    console.error("Erreur suppression:", err);
-    alert("❌ Erreur lors de la suppression : " + (err.message || err));
-  }
+    if (!confirm("Supprimer ce fichier ?")) return;
+
+    const fileRef = firebase.storage().ref(path);
+
+    try {
+      await fileRef.delete();
+      alert("✅ Fichier supprimé");
+      // recharger la liste admin
+      if (typeof loadAdminFiles === 'function') loadAdminFiles();
+    } catch (err) {
+      alert("❌ Erreur : " + (err.message || err));
+    }
 }
 
+// ---------- TÉLÉCHARGER TOUT LE DOSSIER UPLOADS EN ZIP ----------
 function setupDownloadAllButton() {
-  const btn = document.getElementById("downloadAllBtn");
-  if (!btn) return;
-  btn.addEventListener("click", downloadAllUploads);
+    const btn = document.getElementById("downloadAllBtn");
+    if (!btn) return;
+    btn.removeEventListener("click", downloadAllUploads);
+    btn.addEventListener("click", downloadAllUploads);
 }
 
 async function downloadAllUploads() {
-  const zip = new JSZip();
-  const rootRef = firebase.storage().ref("uploads");
-  const rootFolders = await rootRef.listAll();
+    const zip = new JSZip();
+    const rootRef = firebase.storage().ref("uploads");
 
-  for (const folder of rootFolders.prefixes) {
-    const folderZip = zip.folder(folder.name);
-    const files = await folder.listAll();
-    for (const fileRef of files.items) {
-      const url = await fileRef.getDownloadURL();
-      const blob = await fetch(url).then(r => r.blob());
-      folderZip.file(fileRef.name, blob);
+    const rootFolders = await rootRef.listAll();
+
+    for (const folder of rootFolders.prefixes) {
+        const folderZip = zip.folder(folder.name);
+        const files = await folder.listAll();
+
+        for (const fileRef of files.items) {
+            const url = await fileRef.getDownloadURL();
+            const blob = await fetch(url).then(r => r.blob());
+
+            folderZip.file(fileRef.name, blob);
+        }
     }
-  }
 
-  zip.generateAsync({ type: "blob" }).then(content => {
-    saveAs(content, "uploads.zip");
-  });
+    zip.generateAsync({ type: "blob" }).then(content => {
+        saveAs(content, "uploads.zip");
+    });
 }
 
-// ---------- STUDENT ----------
+// ---------- STUDENT (affiche dans le même style que admin, sans bouton supprimer) ----------
 async function loadStudentFiles() {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -353,24 +354,44 @@ async function loadStudentFiles() {
     if (!container) return;
     container.innerHTML = "";
 
+    // On affiche les fichiers avec la même structure/classes que pour l'admin,
+    // mais sans bouton Supprimer.
     for (const fileRef of res.items) {
       try {
         const url = await fileRef.getDownloadURL();
         const fileName = fileRef.name.toLowerCase();
 
         const div = document.createElement("div");
-        div.className = "student-file";
+        // utiliser la même classe que l'admin pour conserver le style
+        div.className = "admin-file";
 
-        let previewHtml = "";
-        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".gif")) {
-          previewHtml = `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" class="preview-img" alt="preview" style="max-width:200px;margin:6px;"></a>`;
+        let preview = "";
+
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
+          preview = `
+            <a href="${url}" target="_blank">
+              <img src="${url}" class="preview-img" alt="preview">
+            </a>
+          `;
         } else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
-          previewHtml = `<a href="${url}" target="_blank" rel="noopener"><video class="preview-video" controls style="max-width:300px;margin:6px;"><source src="${url}" type="video/mp4"></video></a>`;
+          preview = `
+            <a href="${url}" target="_blank">
+              <video class="preview-video" controls>
+                <source src="${url}" type="video/mp4">
+              </video>
+            </a>
+          `;
         } else {
-          previewHtml = `<p>(Aperçu non disponible)</p>`;
+          preview = `<p>(Aperçu non disponible)</p>`;
         }
 
-        div.innerHTML = `${previewHtml}<p>${fileRef.name}</p><a href="${url}" target="_blank" rel="noopener">Voir</a>`;
+        // Pas de bouton supprimer pour l'étudiant, juste le nom et le lien "Voir"
+        div.innerHTML = `
+          ${preview}
+          <p>${fileRef.name}</p>
+          <a href="${url}" target="_blank">Voir</a>
+        `;
+
         container.appendChild(div);
       } catch (e) {
         console.error("Erreur getDownloadURL pour", fileRef.fullPath, e);
@@ -390,7 +411,13 @@ async function loadStudentFiles() {
 
 // ---------- AUTH STATE (UNIQUE handler) ----------
 firebase.auth().onAuthStateChanged(async user => {
-  if (!user) return;
+  if (!user) {
+    // masquer zones si déconnecté
+    if (adminArea) adminArea.style.display = "none";
+    if (studentArea) studentArea.style.display = "none";
+    if (downloadAllBtn) downloadAllBtn.style.display = "none";
+    return;
+  }
   try {
     await ensureClaimThenLoad();
   } catch (e) {
