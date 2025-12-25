@@ -1,54 +1,51 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <title>Dépôt</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Dépôt</title>
 </head>
 <body>
 
 <h1>Déposer une photo ou une vidéo</h1>
 
-<div id="student-area" style="text-align:center; margin-top:40px;">
-    <input type="file" id="uploadFile" accept="image/*,video/*" style="display:none;" multiple>
-    <button id="uploadBtn" style="font-size:22px; padding:20px 40px;">
-        📤 Déposer un fichier
-    </button>
-    <div id="progressContainer" style="display:none; width:100%; background:#ddd; border-radius:5px; margin-top:10px;">
-        <div id="progressBar" style="height:10px; width:0%; background:#4caf50; border-radius:5px;"></div>
-    </div>
-    <p id="uploadStatus"></p>
-</div>:
-
-<div id="student-area" style="display:none;">
-    <h2>Mes fichiers</h2>
-    <div id="studentFiles"></div>
+<!-- Zone d'upload -->
+<div id="upload-area" style="text-align:center; margin-top:40px;">
+  <input type="file" id="uploadFile" accept="image/*,video/*" style="display:none;" multiple>
+  <button id="uploadBtn" style="font-size:22px; padding:20px 40px;">
+    📤 Déposer un fichier
+  </button>
+  <div id="progressContainer" style="display:none; width:100%; background:#ddd; border-radius:5px; margin-top:10px;">
+    <div id="progressBar" style="height:10px; width:0%; background:#4caf50; border-radius:5px;"></div>
+  </div>
+  <p id="uploadStatus"></p>
 </div>
 
+<!-- Zone étudiant : affichage des fichiers -->
+<div id="student-area" style="display:none; margin-top:30px; text-align:center;">
+  <h2>Mes fichiers</h2>
+  <div id="studentFiles"></div>
+</div>
+
+<!-- Zone admin -->
 <div id="admin-area" style="display:none; margin-top:50px;">
-    <h2>Fichiers envoyés par les étudiants</h2>
-    <button id="downloadAllBtn">Télécharger tout</button>
-    <div id="adminFiles" class="admin-grid"></div>
+  <h2>Fichiers envoyés par les étudiants</h2>
+  <button id="downloadAllBtn">Télécharger tout</button>
+  <div id="adminFiles" class="admin-grid"></div>
 </div>
+
+<!-- libs et scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
-<!-- Firebase Core -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-
-<!-- Firebase Auth -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-<!-- Firebase Storage -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
 
-<!-- Ton fichier de configuration Firebase -->
 <script src="/assets/js/firebase-config.js"></script>
-
-<!-- Ton script dépôt -->
 <script src="/assets/js/depot.js"></script>
 </body>
 </html>
