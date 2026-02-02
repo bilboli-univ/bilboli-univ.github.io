@@ -72,7 +72,6 @@ if (sectionParam) {
 // Galerie + Lightbox (AJOUTER)
 // ============================
 const lightbox = document.getElementById("lightbox");
-const lightboxImg = lightbox.querySelector(".lightbox-img");
 const closeBtn = lightbox.querySelector(".lightbox-close");
 const downloadBtn = lightbox.querySelector(".lightbox-download-btn");
 // Fermer la lightbox avec la croix
@@ -99,7 +98,6 @@ function initGallery(containerSelector, jsonPath, imgFolder) {
     const img = e.target.closest("img");
     if (!img) return;
     lightbox.style.display = "flex";
-    lightboxImg.src = img.dataset.full;
     downloadBtn.href = img.dataset.full;
     downloadBtn.download = img.alt || "photo";
   });
