@@ -184,8 +184,8 @@ async function uploadFile() {
                 }
             }
         );
-    }
-}
+    })
+}}
 
 
 // ✅ AFFICHAGE ADMIN : PREVIEW + LECTURE VIDÉO + SUPPRESSION
