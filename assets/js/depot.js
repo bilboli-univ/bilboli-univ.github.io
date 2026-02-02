@@ -76,57 +76,61 @@ async function uploadFile() {
 
 
 // ✅ AFFICHAGE ADMIN : PREVIEW + LECTURE VIDÉO + SUPPRESSION
-function loadAdminFiles() {
+async function loadAdminFiles() {
     const storageRef = firebase.storage().ref("uploads");
+    const container = document.getElementById("adminFiles");
+    container.innerHTML = "";
 
-    storageRef.listAll().then(async res => {
-        const container = document.getElementById("adminFiles");
-        container.innerHTML = "";
+    const root = await storageRef.listAll();
 
-        for (const folder of res.prefixes) {
-            const files = await folder.listAll();
+    // 1) Récupérer toutes les promesses de fichiers
+    const allFilePromises = root.prefixes.map(async folder => {
+        const files = await folder.listAll();
 
-            files.items.forEach(async fileRef => {
+        return Promise.all(
+            files.items.map(async fileRef => {
                 const url = await fileRef.getDownloadURL();
                 const fileName = fileRef.name.toLowerCase();
 
-                const div = document.createElement("div");
-                div.className = "admin-file";
-
                 let preview = "";
 
-                if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
+                if (/\.(jpg|jpeg|png)$/i.test(fileName)) {
                     preview = `
                         <a href="${url}" target="_blank">
-                            <img src="${url}" class="preview-img" alt="preview">
+                            <img src="${url}" loading="lazy" class="preview-img">
                         </a>
                     `;
-                } 
-                else if (fileName.endsWith(".mp4") || fileName.endsWith(".mov") || fileName.endsWith(".webm")) {
+                } else if (/\.(mp4|mov|webm)$/i.test(fileName)) {
                     preview = `
                         <a href="${url}" target="_blank">
-                            <video class="preview-video" controls>
-                                <source src="${url}" type="video/mp4">
+                            <video class="preview-video" controls preload="metadata">
+                                <source src="${url}">
                             </video>
                         </a>
                     `;
-                } 
-                else {
+                } else {
                     preview = `<p>(Aperçu non disponible)</p>`;
                 }
 
-                div.innerHTML = `
-                    ${preview}
-                    <p>${fileRef.name}</p>
-                    <a href="${url}" target="_blank">Voir</a>
-                    <button onclick="deleteFile('${fileRef.fullPath}')">Supprimer</button>
+                return `
+                    <div class="admin-file">
+                        ${preview}
+                        <p>${fileRef.name}</p>
+                        <a href="${url}" target="_blank">Voir</a>
+                        <button onclick="deleteFile('${fileRef.fullPath}')">Supprimer</button>
+                    </div>
                 `;
-
-                container.appendChild(div);
-            });
-        }
+            })
+        );
     });
+
+    // 2) Attendre toutes les promesses en parallèle
+    const allResults = await Promise.all(allFilePromises);
+
+    // 3) Aplatir et injecter dans le DOM en une seule fois
+    container.innerHTML = allResults.flat().join("");
 }
+
 
 // ✅ SUPPRESSION
 function deleteFile(path) {

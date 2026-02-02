@@ -2,7 +2,7 @@ import os
 import json
 from PIL import Image, ExifTags
 
-dos = "test"
+dos = "gala_2026"
 
 # Dossier source contenant les images originales
 SRC = f"/home/basile/Pictures/{dos}"          # dossier d'entrée (original)
