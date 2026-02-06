@@ -157,35 +157,46 @@ async function uploadFile() {
     const p = new Promise((resolve, reject) => {
       const uploadTask = storageRef.put(file, metadata);
 
-        uploadTask.on("state_changed",
-            snapshot => {
-                const current = snapshot.bytesTransferred;
-                const diff = current - fileProgress[i];
-                fileProgress[i] = current;
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          const current = snapshot.bytesTransferred;
+          const diff = current - fileProgress[i];
+          fileProgress[i] = current;
 
-                uploadedBytes += diff;
+          uploadedBytes += diff;
 
-                const progress = (uploadedBytes / totalSize) * 100;
-                document.getElementById("progressBar").style.width = progress + "%";
-            },
-            error => {
-                uploadStatus.textContent = "❌ Erreur : " + error.message;
-            },
-            () => {
-                uploadedCount++;
+          const progress = (uploadedBytes / totalSize) * 100;
+          document.getElementById("progressBar").style.width = progress + "%";
+        },
+        error => {
+          uploadStatus.textContent = "❌ Erreur : " + error.message;
+          reject(error);
+        },
+        () => {
+          uploadedCount++;
 
-                if (uploadedCount === files.length) {
-                    uploadStatus.textContent = `✅ ${uploadedCount} fichier(s) envoyé(s) avec succès !`;
+          if (uploadedCount === files.length) {
+            uploadStatus.textContent = `✅ ${uploadedCount} fichier(s) envoyé(s) avec succès !`;
 
-                    setTimeout(() => {
-                        document.getElementById("progressContainer").style.display = "none";
-                        document.getElementById("progressBar").style.width = "0%";
-                    }, 1500);
-                }
-            }
-        );
-    })
-}}
+            setTimeout(() => {
+              document.getElementById("progressContainer").style.display = "none";
+              document.getElementById("progressBar").style.width = "0%";
+            }, 1500);
+          }
+
+          resolve();
+        }
+      );
+    });
+
+    uploadPromises.push(p);
+  }
+
+  // Attendre la fin de tous les uploads
+  await Promise.all(uploadPromises);
+}
+
 
 
 // ✅ AFFICHAGE ADMIN : PREVIEW + LECTURE VIDÉO + SUPPRESSION
